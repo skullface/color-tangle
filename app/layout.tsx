@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+import { getSiteUrl } from "@/lib/site";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: "Color Tangle",
   description: "Match color names to swatches as fast as you can.",
 };
