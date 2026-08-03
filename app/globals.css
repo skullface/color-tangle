@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #111111;
+  --fg: #f0f0f0;
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+a {
+  color: inherit;
 }

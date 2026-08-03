@@ -327,11 +327,13 @@ export function buildOptions(correct: Color, pool: Color[]): Color[] {
   return shuffle([correct, ...distractors]);
 }
 
-/** Light swatches need a visible border against white backgrounds. */
+/** Near-white/near-black swatches need a border so they read on both themes. */
 export function swatchBorder(hex: string): string {
-  const normalized = hex.replace("#", "").toLowerCase();
-  if (normalized === "ffffff" || normalized === "ffff00") {
-    return "1px solid #ccc";
+  const [r, g, b] = hexToRgb(hex);
+  const luminance =
+    0.2126 * srgbToLinear(r) + 0.7152 * srgbToLinear(g) + 0.0722 * srgbToLinear(b);
+  if (luminance > 0.9 || luminance < 0.08) {
+    return "1px solid #888";
   }
   return "1px solid transparent";
 }
