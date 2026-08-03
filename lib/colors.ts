@@ -66,7 +66,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#A99A86",
     description: "Smoky gray-brown, often associated with horse coats",
     etymology:
-      "From Spanish “grullo”, derived from the common crane (’grulla’).",
+      "From Spanish “grullo”, derived from the common crane (”grulla“).",
     source: "https://en.wiktionary.org/wiki/grullo",
   },
   {
@@ -131,15 +131,15 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Coquelicot",
     hex: "#FF3800",
-    description: "Vivid poppy red-orange",
+    description: "Vivid, poppy red-orange",
     etymology:
-      "French for the corn poppy (Papaver rhoeas), evoking a rooster’s (“coq”) comb.",
+      "French for the corn poppy flower, evoking a rooster’s (“coq”) comb.",
     source: "https://en.wikipedia.org/wiki/Coquelicot",
   },
   {
     name: "Heliotrope",
     hex: "#DF73FF",
-    description: "Pinkish purple or floral violet shade",
+    description: "Pinkish purple",
     etymology:
       "Named after the heliotrope flower, whose petals turn (Greek, “tropos”) to face and follow the sun (Greek, “helios”).",
     source: "https://en.wikipedia.org/wiki/Heliotrope",
@@ -155,7 +155,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Cinereous",
     hex: "#98817B",
-    description: "Ash-gray with brownish warmth",
+    description: "Warm ash gray",
     etymology: "From Latin “cinereus” for ashen.",
     source: "https://en.wiktionary.org/wiki/cinereous",
   },

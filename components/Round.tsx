@@ -26,7 +26,9 @@ export function Round({
   onComplete,
 }: Props) {
   const [options] = useState(() => buildOptions(target, pool));
-  const [feedback, setFeedback] = useState<"idle" | "correct" | "wrong">("idle");
+  const [feedback, setFeedback] = useState<"idle" | "correct" | "wrong">(
+    "idle",
+  );
   const [locked, setLocked] = useState(false);
   const [picked, setPicked] = useState<Color | null>(null);
   const completedRef = useRef(false);
@@ -62,20 +64,6 @@ export function Round({
   const showingFeedback = feedback !== "idle";
 
   function optionBorder(color: Color): string {
-    if (!showingFeedback) {
-      return swatchBorder(color.hex);
-    }
-    const isPicked = picked?.name === color.name;
-    const isCorrect = color.name === target.name;
-    if (isPicked && isCorrect) {
-      return "3px solid #1a7f37";
-    }
-    if (isPicked) {
-      return "3px solid #cf222e";
-    }
-    if (isCorrect && feedback === "wrong") {
-      return "3px solid #1a7f37";
-    }
     return swatchBorder(color.hex);
   }
 
@@ -84,43 +72,89 @@ export function Round({
       <p>
         Round {roundNumber} of {totalRounds}
       </p>
-      <p>
-        Pick: <strong>{target.name}</strong>
+      <p className="font-newsreader">
+        What does{" "}
+        <strong className="font-semibold font-franklin">
+          {target.name.toLowerCase()}
+        </strong>{" "}
+        look like?
       </p>
-      {feedback === "correct" && <p>Correct!</p>}
-      {feedback === "wrong" && <p>Miss</p>}
-      {showingFeedback && (
-        <div>
-          <p>{target.description}</p>
-          <p>{target.etymology}</p>
-          {target.source && (
+      <div
+        role="group"
+        aria-label="Color options"
+        className="flex flex-wrap gap-4"
+      >
+        {options.map((color) => {
+          const isPicked = picked?.name === color.name;
+          const isCorrect = color.name === target.name;
+
+          return (
+            <div key={color.name} className="relative w-25 h-25">
+              <button
+                type="button"
+                disabled={locked}
+                aria-label={color.name}
+                onClick={() => handlePick(color)}
+                className="size-full"
+                style={{
+                  backgroundColor: color.hex,
+                  border: optionBorder(color),
+                }}
+              />
+              {isPicked && (
+                <img
+                  src="/circle.svg"
+                  alt=""
+                  aria-hidden
+                  className="pointer-events-none absolute top-[-12.5%] left-[-12.5%] max-w-[125%] w-[125%] h-[125%] object-contain"
+                />
+              )}
+              {showingFeedback && isCorrect && (
+                <img
+                  src="/check.svg"
+                  alt={(isPicked && "Correct") || ""}
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 top-[33%] left-[33%] max-w-[125%] w-[33%] h-[33%] object-contain"
+                />
+              )}
+              {showingFeedback && isPicked && !isCorrect && (
+                <img
+                  src="/x.svg"
+                  alt="Miss"
+                  className="pointer-events-none absolute top-[-12.5%] left-[-12.5%] max-w-[125%] w-[125%] h-[125%]"
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div id="feedback">
+        {showingFeedback && (
+          <div className="font-source-serif">
             <p>
-              <a href={target.source} target="_blank" rel="noopener noreferrer">
-                Source
-              </a>
+              {target.description}. {target.etymology}{" "}
+              <i>
+                (
+                <a
+                  href={target.source}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                >
+                  Source
+                </a>
+                )
+              </i>
             </p>
-          )}
-          <button type="button" onClick={advance}>
-            Next
-          </button>
-        </div>
-      )}
-      <div role="group" aria-label="Color options">
-        {options.map((color) => (
-          <button
-            key={color.name}
-            type="button"
-            disabled={locked}
-            aria-label={color.name}
-            onClick={() => handlePick(color)}
-            style={{
-              backgroundColor: color.hex,
-              border: optionBorder(color),
-              width: 80,
-              height: 80,
-            }}
-          />
-        ))}
+            <button
+              type="button"
+              onClick={advance}
+              className="p-3 font-franklin font-semibold bg-black text-white"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
