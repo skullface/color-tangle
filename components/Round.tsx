@@ -61,6 +61,22 @@ export function Round({
 
   const showingFeedback = feedback !== "idle";
 
+  function optionBorder(color: Color): string {
+    if (!showingFeedback) {
+      return swatchBorder(color.hex);
+    }
+    const isPicked = picked?.name === color.name;
+    const isCorrect = color.name === target.name;
+    if (isPicked && isCorrect) {
+      return "3px solid #1a7f37";
+    }
+    if (isPicked) {
+      return "3px solid #cf222e";
+    }
+    if (isCorrect && feedback === "wrong") {
+      return "3px solid #1a7f37";
+    }
+    return swatchBorder(color.hex);
   }
 
   return (
@@ -90,7 +106,7 @@ export function Round({
             onClick={() => handlePick(color)}
             style={{
               backgroundColor: color.hex,
-              border: swatchBorder(color.hex),
+              border: optionBorder(color),
               width: 80,
               height: 80,
             }}
