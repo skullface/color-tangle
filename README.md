@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Color Tangle
+
+A fast color-name quiz: match the name to the swatch, score points for speed, share your result.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Global Config
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Runtime settings (palette, round count, timer) load from [Vercel Global Config](https://vercel.com/docs/global-config) when connected. Without a store, local defaults in `lib/colors.ts` and `lib/config.ts` are used.
 
-## Learn More
+1. Create a Global Config store in the [Vercel dashboard](https://vercel.com/docs/global-config) or with `vercel global-config add <slug>`.
+2. Connect it to this project — Vercel sets the `GLOBAL_CONFIG` env var automatically.
+3. Optional keys:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Key | Type | Default | Description |
+| --- | --- | --- | --- |
+| `colors` | `{ name, hex }[]` | 22-color palette | Swatch pool |
+| `rounds` | number | `10` | Rounds per run |
+| `roundMs` | number | `5000` | Countdown per round (ms) |
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy with the Vercel CLI or Git integration. Enable Web Analytics and Speed Insights in the project settings for observability.
