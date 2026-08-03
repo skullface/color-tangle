@@ -230,15 +230,100 @@ function shuffle<T>(items: T[]): T[] {
   return copy;
 }
 
+function hexToRgb(hex: string): [number, number, number] {
+  const normalized = hex.replace("#", "").toLowerCase();
+  const full =
+    normalized.length === 3
+      ? normalized
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : normalized;
+  return [
+    parseInt(full.slice(0, 2), 16),
+    parseInt(full.slice(2, 4), 16),
+    parseInt(full.slice(4, 6), 16),
+  ];
+}
+
+function srgbToLinear(channel: number): number {
+  const c = channel / 255;
+  return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+}
+
+/** CIE L*a*b* via D65 XYZ — used for perceptual distance. */
+function hexToLab(hex: string): [number, number, number] {
+  const [r, g, b] = hexToRgb(hex).map(srgbToLinear);
+  const x = (r * 0.4124564 + g * 0.3575761 + b * 0.1804375) / 0.95047;
+  const y = r * 0.2126729 + g * 0.7151522 + b * 0.072175;
+  const z = (r * 0.0193339 + g * 0.119192 + b * 0.9503041) / 1.08883;
+
+  const f = (t: number) =>
+    t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116;
+
+  const fx = f(x);
+  const fy = f(y);
+  const fz = f(z);
+  return [116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)];
+}
+
+/** CIE76 ΔE — higher means more visually distinct. */
+export function colorDistance(a: string, b: string): number {
+  const [l1, a1, b1] = hexToLab(a);
+  const [l2, a2, b2] = hexToLab(b);
+  return Math.hypot(l1 - l2, a1 - a2, b1 - b2);
+}
+
+/** Minimum ΔE between any two options (~just-noticeable is ~2). */
+const MIN_OPTION_DELTA_E = 28;
+const DISTRACTOR_COUNT = 3;
+
 export function pickRoundColors(colors: Color[], count: number): Color[] {
   return shuffle(colors).slice(0, Math.min(count, colors.length));
 }
 
+function isDistinctFrom(hex: string, others: Color[], minDeltaE: number): boolean {
+  return others.every((c) => colorDistance(hex, c.hex) >= minDeltaE);
+}
+
+function pickDistractors(
+  candidates: Color[],
+  selected: Color[],
+  minDeltaE: number,
+  count: number,
+): Color[] {
+  const picks: Color[] = [];
+  for (const candidate of candidates) {
+    if (picks.length >= count) break;
+    if (isDistinctFrom(candidate.hex, [...selected, ...picks], minDeltaE)) {
+      picks.push(candidate);
+    }
+  }
+  return picks;
+}
+
 export function buildOptions(correct: Color, pool: Color[]): Color[] {
-  const distractors = shuffle(pool.filter((c) => c.name !== correct.name)).slice(
-    0,
-    3,
+  const candidates = shuffle(
+    pool.filter((c) => c.name !== correct.name),
   );
+
+  // Prefer options that are mutually distinct; relax if the pool is thin.
+  let distractors = pickDistractors(
+    candidates,
+    [correct],
+    MIN_OPTION_DELTA_E,
+    DISTRACTOR_COUNT,
+  );
+  if (distractors.length < DISTRACTOR_COUNT) {
+    const remaining = candidates.filter(
+      (c) => !distractors.some((d) => d.name === c.name),
+    );
+    distractors = [
+      ...distractors,
+      ...pickDistractors(remaining, [correct, ...distractors], 0, DISTRACTOR_COUNT - distractors.length),
+    ];
+  }
+
   return shuffle([correct, ...distractors]);
 }
 
