@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@vercel/analytics";
 
 import { pickRoundColors } from "@/lib/colors";
 import type { GameConfig } from "@/lib/config";
@@ -25,6 +26,7 @@ export function Game({ config }: { config: GameConfig }) {
   const [correctCount, setCorrectCount] = useState(0);
 
   function start() {
+    track("quiz_start");
     setRoundColors(pickRoundColors(config.colors, config.rounds));
     setRoundIndex(0);
     setScore(0);
@@ -40,6 +42,10 @@ export function Game({ config }: { config: GameConfig }) {
 
     const nextIndex = roundIndex + 1;
     if (nextIndex >= roundColors.length) {
+      track("quiz_complete", {
+        score: score + result.points,
+        correct: correctCount + (result.correct ? 1 : 0),
+      });
       setPhase("results");
       return;
     }
