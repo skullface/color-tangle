@@ -91,6 +91,15 @@ export function Round({
       {feedback === "wrong" && <p>Miss</p>}
       {showingFeedback && (
         <div>
+          <p>{target.description}</p>
+          <p>{target.etymology}</p>
+          {target.source && (
+            <p>
+              <a href={target.source} target="_blank" rel="noopener noreferrer">
+                Source
+              </a>
+            </p>
+          )}
           <button type="button" onClick={advance}>
             Next
           </button>
