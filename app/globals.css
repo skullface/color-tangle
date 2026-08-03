@@ -12,6 +12,11 @@
   color-scheme: dark;
 }
 
+@theme {  
+  --font-franklin: "Libre Franklin", ui-sans-serif, system-ui, sans-serif;
+  --font-source-serif: "Source Serif 4", ui-sans-serif, system-ui, sans-serif;
+}
+
 body {
   margin: 0;
   background: var(--bg);
