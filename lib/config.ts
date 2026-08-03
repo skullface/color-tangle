@@ -5,13 +5,11 @@ import { DEFAULT_COLORS, type Color } from "./colors";
 export type GameConfig = {
   colors: Color[];
   rounds: number;
-  roundMs: number;
 };
 
 const DEFAULTS: GameConfig = {
   colors: DEFAULT_COLORS,
   rounds: 10,
-  roundMs: 5000,
 };
 
 function isColor(value: unknown): value is Color {
@@ -41,18 +39,15 @@ export async function getGameConfig(): Promise<GameConfig> {
   }
 
   try {
-    const [colors, rounds, roundMs] = await Promise.all([
+    const [colors, rounds] = await Promise.all([
       get<unknown>("colors"),
       get<number>("rounds"),
-      get<number>("roundMs"),
     ]);
 
     return {
       colors: parseColors(colors) ?? DEFAULTS.colors,
       rounds:
         typeof rounds === "number" && rounds > 0 ? rounds : DEFAULTS.rounds,
-      roundMs:
-        typeof roundMs === "number" && roundMs > 0 ? roundMs : DEFAULTS.roundMs,
     };
   } catch {
     return DEFAULTS;

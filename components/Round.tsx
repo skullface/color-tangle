@@ -1,11 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { buildOptions, swatchBorder, type Color } from "@/lib/colors";
 import { scoreRound } from "@/lib/scoring";
-
-const FEEDBACK_MS = 600;
 
 type RoundResult = {
   correct: boolean;
@@ -15,7 +13,6 @@ type RoundResult = {
 type Props = {
   target: Color;
   pool: Color[];
-  roundMs: number;
   roundNumber: number;
   totalRounds: number;
   onComplete: (result: RoundResult) => void;
@@ -24,55 +21,46 @@ type Props = {
 export function Round({
   target,
   pool,
-  roundMs,
   roundNumber,
   totalRounds,
   onComplete,
 }: Props) {
   const [options] = useState(() => buildOptions(target, pool));
-  const [remainingMs, setRemainingMs] = useState(roundMs);
   const [feedback, setFeedback] = useState<"idle" | "correct" | "wrong">("idle");
   const [locked, setLocked] = useState(false);
+  const [picked, setPicked] = useState<Color | null>(null);
   const completedRef = useRef(false);
+  const pendingResultRef = useRef<RoundResult | null>(null);
 
-  const finish = useCallback(
-    (correct: boolean, remaining: number) => {
-      if (completedRef.current) {
-        return;
-      }
-      completedRef.current = true;
-      setLocked(true);
-      setFeedback(correct ? "correct" : "wrong");
-      const points = scoreRound(correct, remaining, roundMs);
-      setTimeout(() => onComplete({ correct, points }), FEEDBACK_MS);
-    },
-    [onComplete, roundMs],
-  );
+  function advance() {
+    const result = pendingResultRef.current;
+    if (!result) {
+      return;
+    }
+    pendingResultRef.current = null;
+    onComplete(result);
+  }
 
-  useEffect(() => {
+  function finish(correct: boolean, selection: Color | null) {
+    if (completedRef.current) {
+      return;
+    }
+    completedRef.current = true;
+    setLocked(true);
+    setPicked(selection);
+    setFeedback(correct ? "correct" : "wrong");
+    pendingResultRef.current = { correct, points: scoreRound(correct) };
+  }
+
+  function handlePick(selection: Color) {
     if (locked) {
       return;
     }
+    finish(selection.name === target.name, selection);
+  }
 
-    const start = performance.now();
-    const id = setInterval(() => {
-      const elapsed = performance.now() - start;
-      const remaining = Math.max(0, roundMs - elapsed);
-      setRemainingMs(remaining);
-      if (remaining <= 0) {
-        clearInterval(id);
-        finish(false, 0);
-      }
-    }, 50);
+  const showingFeedback = feedback !== "idle";
 
-    return () => clearInterval(id);
-  }, [target, roundMs, locked, finish]);
-
-  function handlePick(picked: Color) {
-    if (locked) {
-      return;
-    }
-    finish(picked.name === target.name, remainingMs);
   }
 
   return (
@@ -83,9 +71,15 @@ export function Round({
       <p>
         Pick: <strong>{target.name}</strong>
       </p>
-      <progress max={roundMs} value={remainingMs} />
       {feedback === "correct" && <p>Correct!</p>}
       {feedback === "wrong" && <p>Miss</p>}
+      {showingFeedback && (
+        <div>
+          <button type="button" onClick={advance}>
+            Next
+          </button>
+        </div>
+      )}
       <div role="group" aria-label="Color options">
         {options.map((color) => (
           <button

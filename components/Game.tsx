@@ -56,10 +56,7 @@ export function Game({ config }: { config: GameConfig }) {
     return (
       <section>
         <h1>Color Tangle</h1>
-        <p>
-          Match the color name to the swatch. {config.rounds} rounds,{" "}
-          {config.roundMs / 1000}s each.
-        </p>
+        <p>Match the color name to the swatch. {config.rounds} rounds.</p>
         <button type="button" onClick={start}>
           Start
         </button>
@@ -84,7 +81,6 @@ export function Game({ config }: { config: GameConfig }) {
       key={roundIndex}
       target={target}
       pool={config.colors}
-      roundMs={config.roundMs}
       roundNumber={roundIndex + 1}
       totalRounds={config.rounds}
       onComplete={handleRoundComplete}

@@ -1,16 +1,7 @@
 export const BASE_POINTS = 100;
-export const MAX_SPEED_BONUS = 50;
 
-export function scoreRound(
-  correct: boolean,
-  remainingMs: number,
-  roundMs: number,
-): number {
-  if (!correct) {
-    return 0;
-  }
-  const speedBonus = Math.round(MAX_SPEED_BONUS * (remainingMs / roundMs));
-  return BASE_POINTS + speedBonus;
+export function scoreRound(correct: boolean): number {
+  return correct ? BASE_POINTS : 0;
 }
 
 export function buildSharePath(score: number, correct: number): string {
