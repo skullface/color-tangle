@@ -3,14 +3,14 @@ export type Color = {
   hex: string;
   description: string;
   etymology: string;
-  source?: string;
+  source: string;
 };
 
 export const DEFAULT_COLORS: Color[] = [
   {
     name: "Glaucous",
     hex: "#6082B6",
-    description: "Dusty blue-gray or blue-green shade",
+    description: "Dusty blue-green",
     etymology:
       "From Greek “glaukos”, meaning gleaming, gray, or blue-green. Often loosely linked to “glaux” (owl), via Athena’s epithet “glaukōpis” (gray-eyed/owl-eyed).",
     source: "https://www.etymonline.com/word/glaucous",
@@ -18,7 +18,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Eburnean",
     hex: "#FFFFEE",
-    description: "Ivory-white or creamy off-white shade",
+    description: "Creamy, ivory white",
     etymology:
       "From Latin “eburneus”, meaning “made of ivory”, from “ebur” for “ivory’.",
     source: "https://en.wiktionary.org/wiki/eburnean",
@@ -34,14 +34,14 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Fulvous",
     hex: "#E48400",
-    description: "Tawny yellow-brown or orangish-brown color",
+    description: "Tawny yellow brown",
     etymology: "From Latin “fulvus”: a bright brown, orange, or golden color used in elevated poetry.",
     source: "https://en.wiktionary.org/wiki/fulvus",
   },
   {
     name: "Puce",
     hex: "#CC8899",
-    description: "Dusty dark pink with brownish-purple undertones",
+    description: "Dusty, dark pink",
     etymology:
       "From French “puce”, meaning “flea” — supposedly the color of a flea or flea stain.",
     source: "https://www.etymonline.com/word/puce",
@@ -49,7 +49,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Sinopia",
     hex: "#CB410B",
-    description: "Reddish earth-orange pigment",
+    description: "Reddish earth-orange",
     etymology:
       "Named after Sinop, an ancient Black Sea city known for red ochre pigments.",
     source: "https://en.wikipedia.org/wiki/Sinopia",
@@ -57,14 +57,14 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Mindaro",
     hex: "#E3F988",
-    description: "Pale yellow-green shade",
+    description: "Pale yellow-green",
     etymology: "A modern color name with unclear origin. Someone might have made it up and put it on Wikipedia.",
     source: "https://en.wikipedia.org/wiki/Chartreuse_(color)#Mindaro",
   },
   {
     name: "Grullo",
     hex: "#A99A86",
-    description: "Smoky gray-brown, often associated with horse coats",
+    description: "Smoky gray-brown",
     etymology:
       "From Spanish “grullo”, derived from the common crane (”grulla“).",
     source: "https://en.wiktionary.org/wiki/grullo",
@@ -72,15 +72,16 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Zomp",
     hex: "#39A78E",
-    description: "Medium teal-green color",
+    description: "Medium teal",
     etymology: "Modern color name with unclear origin, but the Internet likes it because it’s weird.",
     source: "https://knowyourmeme.com/memes/zomp",
   },
   {
     name: "Xanthic",
     hex: "#EEED09",
-    description: "Bright yellow or golden-yellow shade",
-    etymology: "From Greek “xanthos”, meaning yellow or golden.",
+    description: "Bright yellow",
+    etymology: "From Ancient Greek “xanthos”, meaning yellow.",
+    source: "https://en.wiktionary.org/wiki/xanthic",
   },
   {
     name: "Zaffre",
@@ -93,7 +94,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Smalt",
     hex: "#0014A8",
-    description: "Vibrant, deep powder-blue",
+    description: "Vibrant, deep powder blue",
     etymology:
       "Ground blue potassium glass, borrowed from the Proto-Germanic word for smelting.",
     source: "https://www.webexhibits.org/pigments/indiv/overview/smalt.html",
@@ -101,7 +102,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Caput mortuum",
     hex: "#592720",
-    description: "Dark, dead reddish-brown or purplish-brown",
+    description: "Dark, dead, red-purple brown",
     etymology:
       "Latin for “dead head”, likely derived from the same alchemical term for the residue left after a reaction.",
     source: "https://en.wikipedia.org/wiki/Caput_mortuum_(pigment)",
@@ -109,7 +110,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Wenge",
     hex: "#645452",
-    description: "Dark brown with muted grayish or purplish tones",
+    description: "Dark brown with muted cool tones",
     etymology: "Named after wenge wood from the Congolese rosewood tree.",
     source: "https://en.wiktionary.org/wiki/wenge",
   },
@@ -147,9 +148,9 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Gamboge",
     hex: "#E49B0F",
-    description: "Rich saffron-yellow to yellow-orange",
+    description: "Rich, saffron yellow",
     etymology:
-      "From Gamboge, an old name for Cambodia, source of the resin pigment.",
+      "From an old name for Cambodia, the source of the resin pigment.",
     source: "https://en.wikipedia.org/wiki/Gamboge",
   },
   {
@@ -162,7 +163,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Feldgrau",
     hex: "#4D5D53",
-    description: "Muted gray-green military shade",
+    description: "Muted, military gray-green",
     etymology: "German for “field gray”, as the German military uniforms in the early 20th century.",
     source: "https://en.wiktionary.org/wiki/feldgrau",
   },
@@ -177,7 +178,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Bole",
     hex: "#79443B",
-    description: "Earthy reddish-brown clay color",
+    description: "Earthen clay reddish-brown",
     etymology:
       "From Latin “bolus”, from Greek “bolos”, meaning a clod or lump of earth.",
     source: "https://en.wiktionary.org/wiki/bole#Etymology_2",
@@ -185,7 +186,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Kobicha",
     hex: "#6B4423",
-    description: "Deep tea-brown shade",
+    description: "Deep, tea brown",
     etymology:
       "The color of Japanese “aphrodisiac tea”-dyed fabric. Originally called kelp tea (昆布茶), it was later renamed to “kobi” (媚, charm/coquetry) and “cha” (茶, tea).",
     source: "https://ja.wikipedia.org/wiki/%E5%AA%9A%E8%8C%B6",
@@ -193,14 +194,14 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Rufous",
     hex: "#A81C07",
-    description: "Reddish-brown, rusty red",
+    description: "Rusty, reddish brown",
     etymology: "From Latin “rufus”, meaning red or red-haired.",
     source: "https://en.wiktionary.org/wiki/rufus",
   },
   {
     name: "Phlox",
     hex: "#DF00FF",
-    description: "Intense magenta-purple",
+    description: "Intense magenta purple",
     etymology: "Named after the phlox flower genius; from Greek “phlox” meaning flame.",
     source: "https://en.wikipedia.org/wiki/Phlox",
   },
