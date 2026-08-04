@@ -12,15 +12,15 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#6082B6",
     description: "Dusty blue-green",
     etymology:
-      "From Greek “glaukos”, meaning gleaming, gray, or blue-green. Often loosely linked to “glaux” (owl), via Athena’s epithet “glaukōpis” (gray-eyed/owl-eyed).",
+      "From Greek “glaukos”, meaning gleaming, gray, or blue-green. Often loosely linked to “glaux” (owl) via Athena’s nickname “glaukōpis” (gray-eyed/owl-eyed).",
     source: "https://www.etymonline.com/word/glaucous",
   },
   {
     name: "Eburnean",
     hex: "#FFFFEE",
-    description: "Creamy, ivory white",
+    description: "Creamy off-white",
     etymology:
-      "From Latin “eburneus”, meaning “made of ivory”, from “ebur” for “ivory’.",
+      "From Latin “eburneus”: “made of ivory.”",
     source: "https://en.wiktionary.org/wiki/eburnean",
   },
   {
@@ -28,14 +28,14 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#50C878",
     description: "Vivid emerald green",
     etymology:
-      "From Greek “smaragdos” and Latin “smaragdus”, meaning “emerald’.",
+      "From Greek “smaragdos” and Latin “smaragdus” meaning emerald.",
     source: "https://en.wiktionary.org/wiki/smaragdine",
   },
   {
     name: "Fulvous",
     hex: "#E48400",
     description: "Tawny yellow brown",
-    etymology: "From Latin “fulvus”: a bright brown, orange, or golden color used in elevated poetry.",
+    etymology: "From Latin “fulvus”: a bright brown, orange, or golden color. Used in elevated poetry.",
     source: "https://en.wiktionary.org/wiki/fulvus",
   },
   {
@@ -43,13 +43,13 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#CC8899",
     description: "Dusty, dark pink",
     etymology:
-      "From French “puce”, meaning “flea” — supposedly the color of a flea or flea stain.",
+      "From French “puce,” meaning “flea,” as the color of a flea stain.",
     source: "https://www.etymonline.com/word/puce",
   },
   {
     name: "Sinopia",
     hex: "#CB410B",
-    description: "Reddish earth-orange",
+    description: "Reddish earth orange",
     etymology:
       "Named after Sinop, an ancient Black Sea city known for red ochre pigments.",
     source: "https://en.wikipedia.org/wiki/Sinopia",
@@ -58,15 +58,15 @@ export const DEFAULT_COLORS: Color[] = [
     name: "Mindaro",
     hex: "#E3F988",
     description: "Pale yellow-green",
-    etymology: "A modern color name with unclear origin. Someone might have made it up and put it on Wikipedia.",
+    etymology: "Honestly, someone probably made this color name up and put it on Wikipedia.",
     source: "https://en.wikipedia.org/wiki/Chartreuse_(color)#Mindaro",
   },
   {
     name: "Grullo",
     hex: "#A99A86",
-    description: "Smoky gray-brown",
+    description: "Smoky gray brown",
     etymology:
-      "From Spanish “grullo”, derived from the common crane (”grulla“).",
+      "From Spanish “grullo,” derived from the common crane.",
     source: "https://en.wiktionary.org/wiki/grullo",
   },
   {
@@ -80,7 +80,7 @@ export const DEFAULT_COLORS: Color[] = [
     name: "Xanthic",
     hex: "#EEED09",
     description: "Bright yellow",
-    etymology: "From Ancient Greek “xanthos”, meaning yellow.",
+    etymology: "From Ancient Greek “xanthos” meaning yellow.",
     source: "https://en.wiktionary.org/wiki/xanthic",
   },
   {
@@ -88,7 +88,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#0014A8",
     description: "Deep, intense cobalt blue",
     etymology:
-      "Cobalt oxide pigment, from the Italian “zaffera”, meaning “sapphire”.",
+      "Cobalt oxide pigment, from the Italian “zaffera” meaning sapphire.",
     source: "https://en.wikipedia.org/wiki/Zaffre",
   },
   {
@@ -96,7 +96,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#0014A8",
     description: "Vibrant, deep powder blue",
     etymology:
-      "Ground blue potassium glass, borrowed from the Proto-Germanic word for smelting.",
+      "Pigment added to glass, borrowed from the Proto-Germanic word for smelting.",
     source: "https://www.webexhibits.org/pigments/indiv/overview/smalt.html",
   },
   {
@@ -104,7 +104,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#592720",
     description: "Dark, dead, red-purple brown",
     etymology:
-      "Latin for “dead head”, likely derived from the same alchemical term for the residue left after a reaction.",
+      "Latin for “dead head,” likely derived from the same alchemical term for the residue left after a reaction.",
     source: "https://en.wikipedia.org/wiki/Caput_mortuum_(pigment)",
   },
   {
@@ -119,20 +119,20 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#801818",
     description: "Deep rustic red",
     etymology:
-      "From Falun, Sweden, source of the pigment used in traditional Falu red paint.",
+      "From Falun, Sweden, the source of the pigment used in traditional Falu red paint.",
     source: "https://en.wikipedia.org/wiki/Falun_red",
     },
   {
     name: "Aureolin",
     hex: "#FDEE00",
     description: "Bright golden yellow",
-    etymology: "From Latin “aureolus”, meaning golden.",
+    etymology: "From Latin “aureolus,” meaning golden.",
     source: "https://en.wiktionary.org/wiki/aureolin",
   },
   {
     name: "Coquelicot",
     hex: "#FF3800",
-    description: "Vivid, poppy red-orange",
+    description: "Vivid red orange",
     etymology:
       "French for the corn poppy flower, evoking a rooster’s (“coq”) comb.",
     source: "https://en.wikipedia.org/wiki/Coquelicot",
@@ -142,7 +142,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#DF73FF",
     description: "Pinkish purple",
     etymology:
-      "Named after the heliotrope flower, whose petals turn (Greek, “tropos”) to face and follow the sun (Greek, “helios”).",
+      "Named after the heliotrope flower (Greek), whose petals turn (“tropos”) to face and the sun (“helios”).",
     source: "https://en.wikipedia.org/wiki/Heliotrope",
   },
   {
@@ -157,22 +157,22 @@ export const DEFAULT_COLORS: Color[] = [
     name: "Cinereous",
     hex: "#98817B",
     description: "Warm ash gray",
-    etymology: "From Latin “cinereus” for ashen.",
+    etymology: "From Latin “cinereus” meaning ashen.",
     source: "https://en.wiktionary.org/wiki/cinereous",
   },
   {
     name: "Feldgrau",
     hex: "#4D5D53",
-    description: "Muted, military gray-green",
-    etymology: "German for “field gray”, as the German military uniforms in the early 20th century.",
+    description: "Muted, gray-green",
+    etymology: "German for “field gray,” as used in German military uniforms in the early 20th century.",
     source: "https://en.wiktionary.org/wiki/feldgrau",
   },
   {
     name: "Byzantium",
     hex: "#702963",
-    description: "Rich imperial purple with magenta undertones",
+    description: "Rich, imperial purple",
     etymology:
-      "Named for Byzantium, associated with Byzantine luxury and imperial purple.",
+      "Named after the city. Associated with luxury and royalty.",
     source: "https://en.wikipedia.org/wiki/Byzantium",
   },
   {
@@ -180,7 +180,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#79443B",
     description: "Earthen clay reddish-brown",
     etymology:
-      "From Latin “bolus”, from Greek “bolos”, meaning a clod or lump of earth.",
+      "From Latin “bolus,” from Greek “bolos,” meaning a clod or lump of earth.",
     source: "https://en.wiktionary.org/wiki/bole#Etymology_2",
   },
   {
@@ -188,14 +188,14 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#6B4423",
     description: "Deep, tea brown",
     etymology:
-      "The color of Japanese “aphrodisiac tea”-dyed fabric. Originally called kelp tea (昆布茶), it was later renamed to “kobi” (媚, charm/coquetry) and “cha” (茶, tea).",
+      "The color of Japanese “aphrodisiac tea”-dyed fabric, from “kobi” (媚 charm/coquetry) and “cha” (茶 tea).",
     source: "https://ja.wikipedia.org/wiki/%E5%AA%9A%E8%8C%B6",
   },
   {
     name: "Rufous",
     hex: "#A81C07",
     description: "Rusty, reddish brown",
-    etymology: "From Latin “rufus”, meaning red or red-haired.",
+    etymology: "From Latin “rufus,” meaning red.",
     source: "https://en.wiktionary.org/wiki/rufus",
   },
   {
@@ -217,7 +217,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#F4CA16",
     description: "Warm, flower-like yellow",
     etymology:
-      "Named after the jonquil flower, from Spanish “junquillo”, meaning “little rush’.",
+      "Named after the jonquil flower, from Spanish “junquillo” meaning “little rush.”",
     source: "https://en.wikipedia.org/wiki/Shades_of_yellow#Jonquil",
   },
 ];
