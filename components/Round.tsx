@@ -1,85 +1,70 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 
-import { buildOptions, swatchBorder, type Color } from "@/lib/colors";
-import { scoreRound } from "@/lib/scoring";
+import { swatchBorder, type Color } from "@/lib/colors";
 import { cn } from "@/lib/utils";
 
-type RoundResult = {
+export type RoundAnswer = {
+  picked: Color;
   correct: boolean;
   points: number;
 };
 
 type Props = {
   target: Color;
-  pool: Color[];
+  options: Color[];
+  answer: RoundAnswer | null;
   roundNumber: number;
   totalRounds: number;
-  onComplete: (result: RoundResult) => void;
+  maxReachable: number;
+  onAnswer: (picked: Color) => void;
+  onGoTo: (index: number) => void;
+  onBack: () => void;
+  onNext: () => void;
 };
 
 export function Round({
   target,
-  pool,
+  options,
+  answer,
   roundNumber,
   totalRounds,
-  onComplete,
+  maxReachable,
+  onAnswer,
+  onGoTo,
+  onBack,
+  onNext,
 }: Props) {
-  const [options] = useState(() => buildOptions(target, pool));
-  const [feedback, setFeedback] = useState<"idle" | "correct" | "wrong">(
-    "idle",
-  );
-  const [locked, setLocked] = useState(false);
-  const [picked, setPicked] = useState<Color | null>(null);
-  const completedRef = useRef(false);
-  const pendingResultRef = useRef<RoundResult | null>(null);
-
-  function advance() {
-    const result = pendingResultRef.current;
-    if (!result) {
-      return;
-    }
-    pendingResultRef.current = null;
-    onComplete(result);
-  }
-
-  function finish(correct: boolean, selection: Color | null) {
-    if (completedRef.current) {
-      return;
-    }
-    completedRef.current = true;
-    setLocked(true);
-    setPicked(selection);
-    setFeedback(correct ? "correct" : "wrong");
-    pendingResultRef.current = { correct, points: scoreRound(correct) };
-  }
-
-  function handlePick(selection: Color) {
-    if (locked) {
-      return;
-    }
-    finish(selection.name === target.name, selection);
-  }
-
-  const showingFeedback = feedback !== "idle";
+  const showingFeedback = answer !== null;
+  const locked = answer !== null;
+  const picked = answer?.picked ?? null;
+  const canGoBack = roundNumber > 1;
+  const viewIndex = roundNumber - 1;
 
   useEffect(() => {
-    if (!showingFeedback) {
-      return;
-    }
-
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key !== "ArrowRight") {
+      if (event.key === "ArrowLeft") {
+        if (!canGoBack) {
+          return;
+        }
+        event.preventDefault();
+        onBack();
         return;
       }
-      event.preventDefault();
-      advance();
+
+      if (event.key === "ArrowRight") {
+        if (!showingFeedback) {
+          return;
+        }
+        event.preventDefault();
+        onNext();
+      }
     }
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [showingFeedback]);
+  }, [canGoBack, showingFeedback, onBack, onNext]);
 
   function optionBorder(color: Color): string {
     return swatchBorder(color.hex);
@@ -88,23 +73,23 @@ export function Round({
   return (
     <section className="h-screen flex flex-col items-center justify-between">
       <div
-        role="status"
+        role="navigation"
         aria-label={`Round ${roundNumber} of ${totalRounds}`}
         className="flex items-center gap-4 py-2 h-12"
       >
         {Array.from({ length: totalRounds }, (_, i) => {
-          const step = i + 1;
-          const isCurrent = step === roundNumber;
-          const isNext = step === roundNumber + 1;
-          const canAdvance = showingFeedback && isNext;
+          const isCurrent = i === viewIndex;
+          const canNavigate = !isCurrent && i <= maxReachable;
 
-          if (canAdvance) {
+          if (canNavigate) {
             return (
               <button
                 key={i}
                 type="button"
-                onClick={advance}
-                aria-label="Next color"
+                onClick={() => onGoTo(i)}
+                aria-label={
+                  i < viewIndex ? `Go to color ${i + 1}` : "Next color"
+                }
                 className="size-1 rounded-full bg-current p-0 border-0 cursor-pointer"
                 style={{ opacity: 0.33 }}
               />
@@ -144,7 +129,7 @@ export function Round({
                   type="button"
                   disabled={locked}
                   aria-label={color.name}
-                  onClick={() => handlePick(color)}
+                  onClick={() => onAnswer(color)}
                   className={cn(
                     "size-full rounded-sm transition-transform duration-75",
                     !showingFeedback && "cursor-pointer hover:scale-105",
@@ -198,11 +183,14 @@ export function Round({
               </p>
               <button
                 type="button"
-                onClick={advance}
-                className="group cursor-pointer py-2 px-3 rounded-sm text-xs uppercase h-8 font-franklin font-semibold hover:bg-(--fg) hover:text-(--bg)"
+                onClick={onNext}
+                className="group cursor-pointer py-2 px-3 rounded-sm font-franklin font-semibold hover:bg-(--fg) hover:text-(--bg)"
                 aria-label="Next color"
               >
-                Next &rarr;
+                Next&nbsp;
+                <span className="opacity-50 group-hover:opacity-100">
+                  &rarr;
+                </span>
               </button>
             </>
           )}

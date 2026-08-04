@@ -3,53 +3,85 @@
 import { useState } from "react";
 import { track } from "@vercel/analytics";
 
-import { pickRoundColors } from "@/lib/colors";
+import { buildOptions, pickRoundColors, type Color } from "@/lib/colors";
 import type { GameConfig } from "@/lib/config";
+import { scoreRound } from "@/lib/scoring";
 
 import { Results } from "./Results";
-import { Round } from "./Round";
+import { Round, type RoundAnswer } from "./Round";
 
 type Phase = "start" | "playing" | "results";
 
-type RoundResult = {
-  correct: boolean;
-  points: number;
-};
-
 export function Game({ config }: { config: GameConfig }) {
   const [phase, setPhase] = useState<Phase>("start");
-  const [roundColors, setRoundColors] = useState<
-    ReturnType<typeof pickRoundColors>
-  >([]);
-  const [roundIndex, setRoundIndex] = useState(0);
+  const [targets, setTargets] = useState<Color[]>([]);
+  const [optionsByRound, setOptionsByRound] = useState<Color[][]>([]);
+  const [answers, setAnswers] = useState<(RoundAnswer | null)[]>([]);
+  const [viewIndex, setViewIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
 
   function start() {
     track("quiz_start");
-    setRoundColors(pickRoundColors(config.colors, config.rounds));
-    setRoundIndex(0);
+    const nextTargets = pickRoundColors(config.colors, config.rounds);
+    setTargets(nextTargets);
+    setOptionsByRound(
+      nextTargets.map((target) => buildOptions(target, config.colors)),
+    );
+    setAnswers(nextTargets.map(() => null));
+    setViewIndex(0);
     setScore(0);
     setCorrectCount(0);
     setPhase("playing");
   }
 
-  function handleRoundComplete(result: RoundResult) {
-    setScore((current) => current + result.points);
-    if (result.correct) {
-      setCorrectCount((current) => current + 1);
+  const frontier = answers.findIndex((answer) => answer === null);
+  const maxReachable = frontier === -1 ? answers.length - 1 : frontier;
+
+  function handleAnswer(picked: Color) {
+    if (answers[viewIndex]) {
+      return;
     }
 
-    const nextIndex = roundIndex + 1;
-    if (nextIndex >= roundColors.length) {
+    const correct = picked.name === targets[viewIndex].name;
+    const points = scoreRound(correct);
+    setAnswers((current) => {
+      const next = [...current];
+      next[viewIndex] = { picked, correct, points };
+      return next;
+    });
+    setScore((current) => current + points);
+    if (correct) {
+      setCorrectCount((current) => current + 1);
+    }
+  }
+
+  function goTo(index: number) {
+    if (index < 0 || index > maxReachable) {
+      return;
+    }
+    setViewIndex(index);
+  }
+
+  function goBack() {
+    goTo(viewIndex - 1);
+  }
+
+  function goNext() {
+    if (!answers[viewIndex]) {
+      return;
+    }
+
+    if (viewIndex >= targets.length - 1) {
       track("quiz_complete", {
-        score: score + result.points,
-        correct: correctCount + (result.correct ? 1 : 0),
+        score,
+        correct: correctCount,
       });
       setPhase("results");
       return;
     }
-    setRoundIndex(nextIndex);
+
+    setViewIndex(viewIndex + 1);
   }
 
   if (phase === "start") {
@@ -75,15 +107,18 @@ export function Game({ config }: { config: GameConfig }) {
     );
   }
 
-  const target = roundColors[roundIndex];
   return (
     <Round
-      key={roundIndex}
-      target={target}
-      pool={config.colors}
-      roundNumber={roundIndex + 1}
+      target={targets[viewIndex]}
+      options={optionsByRound[viewIndex]}
+      answer={answers[viewIndex]}
+      roundNumber={viewIndex + 1}
       totalRounds={config.rounds}
-      onComplete={handleRoundComplete}
+      maxReachable={maxReachable}
+      onAnswer={handleAnswer}
+      onGoTo={goTo}
+      onBack={goBack}
+      onNext={goNext}
     />
   );
 }
