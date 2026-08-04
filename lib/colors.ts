@@ -334,7 +334,7 @@ export function swatchBorder(hex: string): string {
   const luminance =
     0.2126 * srgbToLinear(r) + 0.7152 * srgbToLinear(g) + 0.0722 * srgbToLinear(b);
   if (luminance > 0.9 || luminance < 0.08) {
-    return "1px solid #888";
+    return "inset 0 0 0 1px rgba(0, 0, 0, 0.1)";
   }
-  return "1px solid transparent";
+  return "inset 0 0 0 1px rgba(0, 0, 0, 0.1)";
 }
