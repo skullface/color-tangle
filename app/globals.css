@@ -71,3 +71,20 @@ a {
     stroke-dashoffset: 0;
   }
 }
+
+@keyframes wait-dot-bounce {
+  0%,
+  30%,
+  100% {
+    transform: translateY(0);
+  }
+
+  15% {
+    transform: translateY(-3px);
+  }
+}
+
+.wait-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+}

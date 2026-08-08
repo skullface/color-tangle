@@ -25,16 +25,14 @@ export function OutcomeIcon({
       <span
         className={cn(
           "col-start-1 row-start-1 inline-flex",
-          "motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
+          "motion-safe:transition-transform duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
           "motion-reduce:transition-opacity motion-reduce:duration-150",
           showFace
             ? "pointer-events-none scale-0 motion-reduce:scale-100 motion-reduce:opacity-0"
             : "scale-100 motion-reduce:opacity-100",
         )}
       >
-        <span className="inline-flex origin-center motion-safe:group-hover/wait:animate-[spin_4s_linear_infinite] motion-safe:hover:animate-[spin_4s_linear_infinite]">
-          <NavIcon src="/wait.svg" />
-        </span>
+        <WaitDotsIcon />
       </span>
       <span
         className={cn(
@@ -49,5 +47,44 @@ export function OutcomeIcon({
         <NavIcon src={frown ? "/frown.svg" : "/smiley.svg"} />
       </span>
     </span>
+  );
+}
+
+const waitDotClass = cn(
+  "wait-dot",
+  "motion-safe:group-hover/wait:animate-[wait-dot-bounce_0.9s_ease-in-out_infinite]",
+  "motion-safe:group-focus/wait:animate-[wait-dot-bounce_0.9s_ease-in-out_infinite]",
+);
+
+function WaitDotsIcon() {
+  return (
+    <svg aria-hidden viewBox="0 0 34 8" fill="none" className="block size-3">
+      <path
+        className={waitDotClass}
+        d="M3.00037 4.06876L3.05212 3.67715"
+        stroke="currentColor"
+        strokeWidth="6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        className={waitDotClass}
+        style={{ animationDelay: "0.3s" }}
+        d="M16.8275 4.0004L16.9523 4.0463"
+        stroke="currentColor"
+        strokeWidth="6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        className={waitDotClass}
+        style={{ animationDelay: "0.6s" }}
+        d="M30.222 3.0004L30.2797 3.39493"
+        stroke="currentColor"
+        strokeWidth="6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

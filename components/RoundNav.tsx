@@ -71,12 +71,14 @@ export function RoundNav({
               }
               className={cn(
                 "group",
-                "p-2",
-                "border-0 cursor-pointer",
-                "opacity-33 hover:opacity-100",
+                "p-2 rounded-full cursor-pointer",
+                "focus:outline-none focus-visible:opacity-100",
               )}
             >
-              <span className="block size-2 rounded-full bg-transparent border border-current group-hover:bg-current" />
+              <span
+                className="block size-2 rounded-full bg-transparent ring ring-current group-hover:bg-current 
+                opacity-33 group-hover:opacity-100  group-focus-visible:ring group-focus-visible:ring-(--fg) group-focus-visible:bg-(--fg)"
+              />
             </button>
           );
         }
@@ -86,16 +88,14 @@ export function RoundNav({
             key={i}
             aria-hidden
             className={cn(
-              "bg-transparent p-2 border-0",
+              "bg-transparent p-2",
               isCurrent ? "opacity-100" : "opacity-33",
             )}
           >
             <span
               className={cn(
                 "block size-2 rounded-full",
-                isCurrent
-                  ? "bg-current"
-                  : "bg-transparent border border-current",
+                isCurrent ? "bg-current" : "bg-transparent ring ring-current",
               )}
             />
           </span>
@@ -107,7 +107,8 @@ export function RoundNav({
           aria-label={tooltip}
           onClick={canOpenResults ? onGoToResults : undefined}
           className={cn(
-            "group/wait bg-transparent p-2 border-0 text-current select-none",
+            "group/wait bg-transparent p-2 text-current select-none",
+            "focus:outline-none focus-visible:opacity-100 hover:opacity-100",
             showingResults ? "opacity-100" : "opacity-33",
             canOpenResults
               ? "cursor-pointer hover:opacity-100"
