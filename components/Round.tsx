@@ -156,11 +156,11 @@ export function Round({
       </div>
       <div className="flex flex-col items-center justify-center gap-8">
         <p className="font-newsreader text-center text-lg">
-          What does{" "}
+          What color is{" "}
           <strong className="font-semibold font-franklin px-px">
             {target.name.toLowerCase()}
-          </strong>{" "}
-          look like?
+          </strong>
+          ?
         </p>
         <div
           role="group"
@@ -238,26 +238,21 @@ export function Round({
         <div id="feedback" className="flex flex-col items-center gap-4 h-34">
           {showingFeedback && (
             <>
-              <p className="font-source-serif max-w-[60ch] text-center text-balance">
-                {" "}
-                <span
-                  className="underline underline-offset-2"
-                  style={{
-                    textDecorationColor: softAccentColor(
-                      target.hex,
-                      backgroundHex,
-                    ),
-                  }}
-                >
-                  {target.description}
-                </span>
-                . {target.etymology}
+              <p className="font-source-serif max-w-[62ch] text-center text-balance">
+                {target.description}. {target.etymology}
                 &nbsp;
                 <a
                   href={target.source}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="opacity-50 hover:opacity-100 italic"
+                  className="hover:decoration-inherit! underline underline-offset-2 italic"
+                  style={{
+                    textDecorationColor: softAccentColor(
+                      target.hex,
+                      backgroundHex,
+                      foregroundHex,
+                    ),
+                  }}
                 >
                   (Source)
                 </a>
@@ -274,7 +269,7 @@ export function Round({
                   ),
                 }}
               >
-                Next&nbsp;
+                {roundNumber === totalRounds ? "See results" : "Next color"}
                 &nbsp;
                 <span
                   className="group-hover:text-inherit!"
