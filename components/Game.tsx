@@ -141,6 +141,7 @@ export function Game({ config }: { config: GameConfig }) {
     <RoundNav
       roundNumber={phase === "playing" ? viewIndex + 1 : null}
       totalRounds={config.rounds}
+      correctCount={correctCount}
       maxReachable={maxReachable}
       showingResults={phase === "results"}
       resultsReachable={resultsReachable}

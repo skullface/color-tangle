@@ -155,6 +155,7 @@ type RoundNavProps = {
   /** 1-based round, or `null` when no round is active (start / results). */
   roundNumber: number | null;
   totalRounds: number;
+  correctCount: number;
   maxReachable: number;
   showingResults: boolean;
   resultsReachable: boolean;
@@ -162,9 +163,111 @@ type RoundNavProps = {
   onGoToResults: () => void;
 };
 
+function PendingResultsIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 36 35"
+      width="36"
+      height="35"
+      className="w-3 h-3"
+    >
+      <g
+        stroke="var(--fg)"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="4"
+      >
+        <path d="m17.1527 7.51196c.0226-.04613.0452-.09226.0529-.30194s-.0003-.5815-.092-1.38333c-.0918-.80184-.2671-2.02242-.594-3.82635" />
+        <path d="m25.8029 9.28697c.0072-.01794.176-.43701.6892-1.43039.3481-.58356.8743-1.32842 1.2361-1.80955.3617-.48114.543-.67597.7779-.9805" />
+        <path d="m27.9784 17.3939c.0532.0214 1.1406.4448 2.9988 1.1259.7982.2686 1.3025.3811 1.7125.495.4099.1139.7102.2258 1.0195.3411" />
+        <path d="m23.1686 26.0003c.0111.026.2431.4877.7665 1.4336.2972.4975.6585 1.0308 1.0313 1.5026.3728.4719.7462.8662 1.4916 1.5167" />
+        <path d="m14.5381 25.8236-2.5861 6.4206" />
+        <path d="m8.45095 19.9501c-.00867-.0035-.01734-.007-1.04302.2581-1.02568.265-3.0681.7987-5.40745 1.4328" />
+        <path d="m11.3273 12.7073c-.018-.0072-.0359-.0145-.9206-.3708-.88461-.3563-2.63543-1.0615-3.66417-1.5034-1.02873-.4418-1.28233-.5988-2.23386-1.03864" />
+      </g>
+    </svg>
+  );
+}
+
+function ResultsFaceIcon({ frown }: { frown: boolean }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="34"
+      height="29"
+      viewBox="0 0 34 29"
+      fill="none"
+      className="w-3 h-3"
+    >
+      <path
+        d="M3.17316 3.06863L3.22491 2.67703"
+        stroke="var(--fg)"
+        strokeWidth="5.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M30.3948 2.00027L30.4525 2.39481"
+        stroke="var(--fg)"
+        strokeWidth="5.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M31.2806 12.8284C31.2806 13.2225 31.1903 14.4618 30.6691 15.9262C29.5347 19.113 27.5497 21.3588 25.7107 23.0237C24.5318 24.091 22.2213 24.8403 19.47 25.6782C14.8512 27.0848 12.1863 26.0513 10.2447 25.0799C7.20003 23.5566 4.92306 20.3097 3.0299 16.9574C2.67396 16.0587 2.46577 15.1699 2.33887 14.5437C2.21197 13.9174 2.17265 13.5806 2.00031 12.6018"
+        stroke="var(--fg)"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        transform={frown ? "rotate(180 16.64 19.14)" : undefined}
+      />
+    </svg>
+  );
+}
+
+function ResultsNavIcons({
+  showingResults,
+  frown,
+}: {
+  showingResults: boolean;
+  frown: boolean;
+}) {
+  return (
+    <span className="relative inline-grid size-3 place-items-center">
+      <span
+        className={cn(
+          "col-start-1 row-start-1 inline-flex",
+          "motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
+          "motion-reduce:transition-opacity motion-reduce:duration-150",
+          showingResults
+            ? "pointer-events-none scale-0 motion-reduce:scale-100 motion-reduce:opacity-0"
+            : "scale-100 motion-reduce:opacity-100",
+        )}
+      >
+        <PendingResultsIcon />
+      </span>
+      <span
+        className={cn(
+          "col-start-1 row-start-1 inline-flex",
+          "motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
+          "motion-reduce:transition-opacity motion-reduce:duration-150",
+          showingResults
+            ? "scale-100 motion-reduce:opacity-100"
+            : "pointer-events-none scale-0 motion-reduce:scale-100 motion-reduce:opacity-0",
+        )}
+      >
+        <ResultsFaceIcon frown={frown} />
+      </span>
+    </span>
+  );
+}
+
 export function RoundNav({
   roundNumber,
   totalRounds,
+  correctCount,
   maxReachable,
   showingResults,
   resultsReachable,
@@ -177,6 +280,8 @@ export function RoundNav({
     : roundNumber === null
       ? `${totalRounds} colors`
       : `Round ${roundNumber} of ${totalRounds}`;
+  const frown = correctCount <= totalRounds / 2;
+  const canOpenResults = resultsReachable && !showingResults;
 
   return (
     <div
@@ -223,26 +328,25 @@ export function RoundNav({
           </span>
         );
       })}
-      {resultsReachable && !showingResults ? (
-        <button
-          type="button"
-          onClick={onGoToResults}
-          aria-label="See results"
-          className="p-2 border-0 cursor-pointer opacity-33 hover:opacity-100 text-current select-none text-[0.6rem]"
-        >
-          &#9733;
-        </button>
-      ) : (
-        <span
-          aria-hidden={!showingResults}
-          className={cn(
-            "bg-transparent p-2 border-0 text-current select-none text-[0.6rem]",
-            showingResults ? "opacity-100" : "opacity-33",
-          )}
-        >
-          &#9733;
+      <span
+        className={cn(
+          "relative bg-transparent p-2 border-0 text-current select-none",
+          showingResults ? "opacity-100" : "opacity-33",
+          canOpenResults && "hover:opacity-100",
+        )}
+      >
+        {canOpenResults ? (
+          <button
+            type="button"
+            onClick={onGoToResults}
+            aria-label="See results"
+            className="absolute inset-0 cursor-pointer border-0 bg-transparent"
+          />
+        ) : null}
+        <span aria-hidden={!showingResults}>
+          <ResultsNavIcons showingResults={showingResults} frown={frown} />
         </span>
-      )}
+      </span>
     </div>
   );
 }
@@ -309,16 +413,15 @@ export function Round({
       <div
         role="group"
         aria-label="Color options"
-        className="flex flex-wrap gap-6 mx-6 items-center justify-center"
+        className="flex flex-wrap gap-2 mx-6 items-center justify-center"
       >
         {options.map((color, index) => {
           const isPicked = picked?.name === color.name;
           const isCorrect = color.name === target.name;
-          const blobPath =
-            OPTION_BLOB_PATHS[index % OPTION_BLOB_PATHS.length];
+          const blobPath = blobPaths[index]!;
 
           return (
-            <div key={color.name} className="relative w-25 h-25">
+            <div key={color.name} className="relative w-30 h-30">
               <button
                 type="button"
                 disabled={locked}
