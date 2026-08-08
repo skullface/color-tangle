@@ -14,10 +14,10 @@ function NavIcon({ src }: { src: string }) {
 }
 
 export function ResultsNavIcons({
-  showingResults,
+  showFace,
   frown,
 }: {
-  showingResults: boolean;
+  showFace: boolean;
   frown: boolean;
 }) {
   return (
@@ -27,7 +27,7 @@ export function ResultsNavIcons({
           "col-start-1 row-start-1 inline-flex",
           "motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
           "motion-reduce:transition-opacity motion-reduce:duration-150",
-          showingResults
+          showFace
             ? "pointer-events-none scale-0 motion-reduce:scale-100 motion-reduce:opacity-0"
             : "scale-100 motion-reduce:opacity-100",
         )}
@@ -41,7 +41,7 @@ export function ResultsNavIcons({
           "col-start-1 row-start-1 inline-flex",
           "motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
           "motion-reduce:transition-opacity motion-reduce:duration-150",
-          showingResults
+          showFace
             ? "scale-100 motion-reduce:opacity-100"
             : "pointer-events-none scale-0 motion-reduce:scale-100 motion-reduce:opacity-0",
         )}

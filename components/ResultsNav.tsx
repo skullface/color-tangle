@@ -16,19 +16,14 @@ type ResultsNavProps = {
 };
 
 function resultsIconTooltip({
-  showingResults,
   resultsReachable,
   frown,
 }: {
-  showingResults: boolean;
   resultsReachable: boolean;
   frown: boolean;
 }) {
-  if (showingResults) {
-    return frown ? "Maybe next time!" : "Nice work!";
-  }
   if (resultsReachable) {
-    return "Go back to your score?";
+    return frown ? "Maybe next time!" : "Nice work!";
   }
   return "Finish the game to see your score!";
 }
@@ -51,11 +46,7 @@ export function ResultsNav({
       : `Round ${roundNumber} of ${totalRounds}`;
   const frown = correctCount <= totalRounds / 2;
   const canOpenResults = resultsReachable && !showingResults;
-  const tooltip = resultsIconTooltip({
-    showingResults,
-    resultsReachable,
-    frown,
-  });
+  const tooltip = resultsIconTooltip({ resultsReachable, frown });
 
   return (
     <div
@@ -124,7 +115,7 @@ export function ResultsNav({
           )}
         >
           <span aria-hidden>
-            <ResultsNavIcons showingResults={showingResults} frown={frown} />
+            <ResultsNavIcons showFace={resultsReachable} frown={frown} />
           </span>
         </Tooltip.Trigger>
         <Tooltip.Portal>
