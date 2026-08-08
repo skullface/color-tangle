@@ -70,6 +70,7 @@ export function Round({
     return swatchBorder(color.hex);
   }
 
+  function optionStroke(color: Color): string {
   return (
     <section className="h-screen flex flex-col items-center justify-between">
       <div
@@ -140,27 +141,73 @@ export function Round({
                   }}
                 />
                 {isPicked && (
-                  <img
-                    src="/circle.svg"
-                    alt=""
+                  <svg
+                    width="112"
+                    height="102"
+                    viewBox="0 0 112 102"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                     aria-hidden
-                    className="pointer-events-none absolute top-[-12.5%] left-[-12.5%] max-w-[125%] w-[125%] h-[125%] object-contain"
-                  />
+                    className="pointer-events-none absolute top-[-12.5%] left-[-12.5%] max-w-[125%] w-[125%] h-[125%]"
+                  >
+                    <path
+                      d="M75.6573 10.6806C70.8697 11.1653 62.6374 11.7141 51.4235 12.7447C30.6371 14.6551 13.3925 27.2866 6.85876 32.2679C3.41834 34.8909 2.24556 39.4484 1.42942 44.918C-0.354358 56.8726 3.53392 64.0206 10.9519 75.2312C19.6965 88.4468 31.6613 93.5156 40.9921 97.6066C54.4883 103.524 71.4202 99.3933 81.4357 96.0284C96.3567 91.0155 101.413 82.1772 106.131 76.1602C110.401 70.7142 110.653 63.2311 110.868 50.6754C111.068 39.0926 101.381 23.1505 92.3369 11.2418C86.1588 3.10683 79.587 2.25438 73.3939 1.03348C62.7421 0.796999 57.0769 1.7663 48.5941 5.36843C42.0783 8.42786 31.0736 13.9876 19.7354 19.7158"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 )}
                 {showingFeedback && isCorrect && (
-                  <img
-                    src="/check.svg"
-                    alt={(isPicked && "Correct") || ""}
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 top-[33%] left-[33%] max-w-[125%] w-[33%] h-[33%] object-contain"
-                  />
+                  <svg
+                    width="34"
+                    height="34"
+                    viewBox="0 0 34 34"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden={!isPicked}
+                    aria-label={isPicked ? "Correct" : undefined}
+                    role={isPicked ? "img" : undefined}
+                    className="pointer-events-none absolute inset-0 top-[33%] left-[33%] max-w-[125%] w-[33%] h-[33%]"
+                  >
+                    <path
+                      d="M11.4118 17.7752C12.5307 20.1864 14.8543 25.1104 15.1241 25.4706C16.2542 21.2615 19.3467 12.8128 20.9631 9.81645C21.2974 9.30464 21.6517 8.80078 22.7059 7.58826"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M15.9148 1C14.8162 1 11.3187 1.14096 8.77376 2.31729C5.40024 3.87661 3.83401 7.5468 1.90468 11.8215C0.0597028 15.9094 1.45425 22.3953 2.41198 24.8725C3.52655 27.7554 6.44119 29.8789 9.78184 31.7901C13.2972 33.8013 18.9024 32.8674 21.536 32.104C25.2374 31.031 28.6079 27.0296 30.8086 24.1696C32.6696 21.751 33.1857 14.9281 32.9447 10.8463C32.7863 8.16237 30.005 6.30417 26.2577 3.67306C23.5268 2.27697 20.1217 1.54628 11.9019 1.39933C10.1806 1.45604 9.50218 1.58632 8.45138 1.7939"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 )}
                 {showingFeedback && isPicked && !isCorrect && (
-                  <img
-                    src="/x.svg"
-                    alt="Miss"
+                  <svg
+                    width="100"
+                    height="104"
+                    viewBox="0 0 100 104"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    aria-label="Miss"
                     className="pointer-events-none absolute top-[-12.5%] left-[-12.5%] max-w-[125%] w-[125%] h-[125%]"
-                  />
+                  >
+                    <path
+                      d="M5.54686 1C5.47467 3.47355 5.6246 11.6559 10.7607 22.9521C13.3559 28.6597 19.7751 36.7841 28.8549 47.4019C37.9347 58.0198 50.2014 70.5005 59.0749 78.8539C67.9484 87.2072 73.0569 91.0551 76.4505 93.453C79.844 95.851 81.3676 96.6824 82.9375 97.5391"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M98.7617 12.9062C98.723 12.9062 98.6844 12.9062 98.0238 13.146C97.3632 13.3858 96.0819 13.8653 80.1458 28.3165C64.2096 42.7677 33.6576 71.1761 1 102.785"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 )}
               </div>
             );
