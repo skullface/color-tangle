@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useEffectEvent, useState, type ReactNode } from "react";
 import { track } from "@vercel/analytics";
+import Link from "next/link";
 
 import { buildOptions, pickRoundColors, type Color } from "@/lib/colors";
 import type { GameConfig } from "@/lib/config";
-import { scoreRound } from "@/lib/scoring";
+import { scoreRound, type Answer } from "@/lib/scoring";
 
 import { Results } from "./Results";
-import { Round, RoundNav, type RoundAnswer } from "./Round";
+import { ResultsNav } from "./ResultsNav";
+import { Round } from "./round";
 
 type Phase = "start" | "playing" | "results";
 
@@ -33,7 +35,7 @@ export function Game({ config }: { config: GameConfig }) {
   const [phase, setPhase] = useState<Phase>("start");
   const [targets, setTargets] = useState<Color[]>([]);
   const [optionsByRound, setOptionsByRound] = useState<Color[][]>([]);
-  const [answers, setAnswers] = useState<(RoundAnswer | null)[]>([]);
+  const [answers, setAnswers] = useState<(Answer | null)[]>([]);
   const [viewIndex, setViewIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
@@ -86,10 +88,6 @@ export function Game({ config }: { config: GameConfig }) {
     }
   }
 
-  function goBack() {
-    goTo(viewIndex - 1);
-  }
-
   function goNext() {
     if (!answers[viewIndex]) {
       return;
@@ -117,28 +115,43 @@ export function Game({ config }: { config: GameConfig }) {
     setPhase("results");
   }
 
-  useEffect(() => {
-    if (phase !== "results" || maxReachable < 0) {
+  const onKeyDown = useEffectEvent((event: KeyboardEvent) => {
+    if (event.key === "ArrowLeft") {
+      if (phase === "results" && maxReachable >= 0) {
+        event.preventDefault();
+        setViewIndex(maxReachable);
+        setPhase("playing");
+        return;
+      }
+
+      if (phase === "playing" && viewIndex > 0) {
+        event.preventDefault();
+        setViewIndex(viewIndex - 1);
+      }
       return;
     }
 
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key !== "ArrowLeft") {
+    if (event.key === "ArrowRight" && phase === "playing") {
+      if (!answers[viewIndex]) {
         return;
       }
       event.preventDefault();
-      setViewIndex(maxReachable);
-      setPhase("playing");
+      goNext();
     }
+  });
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [phase, maxReachable]);
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      onKeyDown(event);
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const resultsReachable = answers.length > 0 && frontier === -1;
 
   const footerNav = (
-    <RoundNav
+    <ResultsNav
       roundNumber={phase === "playing" ? viewIndex + 1 : null}
       totalRounds={config.rounds}
       correctCount={correctCount}
@@ -157,7 +170,10 @@ export function Game({ config }: { config: GameConfig }) {
           <h1 className="font-franklin text-3xl font-semibold">Color Tangle</h1>
           <p className="font-source-serif text-center text-balance">
             Match the color name to its swatch. Inspired by the Iron Tangle from{" "}
-            <cite>The Dungeon Anarchist’s Cookbook</cite> by Matt Dinniman.
+            <Link href="https://mattdinniman.com/books/the-dungeon-anarchists-cookbook/">
+              <cite>The Dungeon Anarchist’s Cookbook</cite> by Matt Dinniman
+            </Link>
+            .
           </p>
           <button
             type="button"
@@ -193,7 +209,6 @@ export function Game({ config }: { config: GameConfig }) {
         roundNumber={viewIndex + 1}
         totalRounds={config.rounds}
         onAnswer={handleAnswer}
-        onBack={goBack}
         onNext={goNext}
       />
     </GameShell>

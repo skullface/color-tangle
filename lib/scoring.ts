@@ -1,4 +1,12 @@
+import type { Color } from "./colors";
+
 export const BASE_POINTS = 100;
+
+export type Answer = {
+  picked: Color;
+  correct: boolean;
+  points: number;
+};
 
 export function scoreRound(correct: boolean): number {
   return correct ? BASE_POINTS : 0;
