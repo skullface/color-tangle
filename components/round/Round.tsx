@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { blobPathsForRound } from "@/lib/blobs";
 import type { Color } from "@/lib/colors";
 import type { Answer } from "@/lib/scoring";
@@ -28,6 +29,18 @@ export function Round({
   const revealed = answer !== null;
   const picked = answer?.picked ?? null;
   const blobPaths = blobPathsForRound(roundNumber, options.length);
+  const optionsRef = useRef<HTMLDivElement>(null);
+
+  // When advancing to a new unanswered round, the "Next color" control unmounts
+  // and focus would otherwise fall to the footer nav. Move it to the first option.
+  useEffect(() => {
+    if (revealed) {
+      return;
+    }
+    const firstOption =
+      optionsRef.current?.querySelector<HTMLButtonElement>("button");
+    firstOption?.focus();
+  }, [roundNumber, revealed]);
 
   return (
     <main className="flex flex-col items-center justify-center gap-8">
@@ -39,6 +52,7 @@ export function Round({
         ?
       </p>
       <div
+        ref={optionsRef}
         role="group"
         aria-label="Color options"
         className="flex flex-wrap gap-2 mx-6 items-center justify-center"
