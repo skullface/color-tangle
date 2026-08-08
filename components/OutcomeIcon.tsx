@@ -13,7 +13,7 @@ function NavIcon({ src }: { src: string }) {
   );
 }
 
-export function ResultsNavIcons({
+export function OutcomeIcon({
   showFace,
   frown,
 }: {

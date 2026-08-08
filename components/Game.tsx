@@ -9,8 +9,8 @@ import type { GameConfig } from "@/lib/config";
 import { scoreRound, type Answer } from "@/lib/scoring";
 
 import { Results } from "./Results";
-import { ResultsNav } from "./ResultsNav";
-import { Round } from "./round/Round";
+import { RoundNav } from "./RoundNav";
+import { Round } from "./Round";
 
 type Phase = "start" | "playing" | "results";
 
@@ -151,7 +151,7 @@ export function Game({ config }: { config: GameConfig }) {
   const resultsReachable = answers.length > 0 && frontier === -1;
 
   const footerNav = (
-    <ResultsNav
+    <RoundNav
       roundNumber={phase === "playing" ? viewIndex + 1 : null}
       totalRounds={config.rounds}
       correctCount={correctCount}

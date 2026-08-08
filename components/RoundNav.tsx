@@ -1,10 +1,10 @@
 "use client";
 
 import { Tooltip } from "@base-ui/react/tooltip";
-import { ResultsNavIcons } from "./ResultsNavIcons";
+import { OutcomeIcon } from "./OutcomeIcon";
 import { cn } from "@/lib/utils";
 
-type ResultsNavProps = {
+type RoundNavProps = {
   roundNumber: number | null;
   totalRounds: number;
   correctCount: number;
@@ -15,7 +15,7 @@ type ResultsNavProps = {
   onGoToResults: () => void;
 };
 
-function resultsIconTooltip({
+function outcomeIconTooltip({
   resultsReachable,
   frown,
 }: {
@@ -28,7 +28,7 @@ function resultsIconTooltip({
   return "Finish the game to see your score!";
 }
 
-export function ResultsNav({
+export function RoundNav({
   roundNumber,
   totalRounds,
   correctCount,
@@ -37,7 +37,7 @@ export function ResultsNav({
   resultsReachable,
   onGoTo,
   onGoToResults,
-}: ResultsNavProps) {
+}: RoundNavProps) {
   const viewIndex = roundNumber === null ? -1 : roundNumber - 1; // 1-based round, or `null` when no round is active (start / results).
   const ariaLabel = showingResults
     ? "Results"
@@ -46,7 +46,7 @@ export function ResultsNav({
       : `Round ${roundNumber} of ${totalRounds}`;
   const frown = correctCount <= totalRounds / 2;
   const canOpenResults = resultsReachable && !showingResults;
-  const tooltip = resultsIconTooltip({ resultsReachable, frown });
+  const tooltip = outcomeIconTooltip({ resultsReachable, frown });
 
   return (
     <div
@@ -115,7 +115,7 @@ export function ResultsNav({
           )}
         >
           <span aria-hidden>
-            <ResultsNavIcons showFace={resultsReachable} frown={frown} />
+            <OutcomeIcon showFace={resultsReachable} frown={frown} />
           </span>
         </Tooltip.Trigger>
         <Tooltip.Portal>
