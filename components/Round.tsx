@@ -291,7 +291,10 @@ export function Round({
           )}
         </div>
       </div>
-      <div className="py-2 h-12 font-source-serif"></div>
+      <div className="py-2 h-12 font-source-serif text-sm">
+        Inspired by the Iron Tangle from{" "}
+        <cite>The Dungeon Anarchist’s Cookbook</cite> by Matt Dinniman
+      </div>
     </section>
   );
 }
