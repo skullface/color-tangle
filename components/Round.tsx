@@ -221,38 +221,6 @@ export function Round({
                     />
                   </svg>
                 )}
-                {/*
-                {showingFeedback && isPicked && !isCorrect && (
-                  <svg
-                    width="100"
-                    height="104"
-                    viewBox="0 0 100 104"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    role="img"
-                    aria-label="Miss"
-                    className="pointer-events-none absolute top-[-12.5%] left-[-12.5%] max-w-[125%] w-[125%] h-[125%]"
-                    stroke={optionStroke(color)}
-                  >
-                    <path
-                      d="M5.54686 1C5.47467 3.47355 5.6246 11.6559 10.7607 22.9521C13.3559 28.6597 19.7751 36.7841 28.8549 47.4019C37.9347 58.0198 50.2014 70.5005 59.0749 78.8539C67.9484 87.2072 73.0569 91.0551 76.4505 93.453C79.844 95.851 81.3676 96.6824 82.9375 97.5391"
-                      pathLength={1}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="stroke-draw"
-                    />
-                    <path
-                      d="M98.7617 12.9062C98.723 12.9062 98.6844 12.9062 98.0238 13.146C97.3632 13.3858 96.0819 13.8653 80.1458 28.3165C64.2096 42.7677 33.6576 71.1761 1 102.785"
-                      pathLength={1}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="stroke-draw stroke-draw-x-second"
-                    />
-                  </svg>
-                  */}
-                {/*)}*/}
               </div>
             );
           })}
