@@ -238,6 +238,7 @@ export function Round({
               <button
                 type="button"
                 onClick={onNext}
+                className="group cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold hover:bg-(--fg) hover:text-(--bg)"
                 aria-label="Next color"
               >
                 Next&nbsp;
