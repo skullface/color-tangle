@@ -32,7 +32,9 @@ export function ResultsNavIcons({
             : "scale-100 motion-reduce:opacity-100",
         )}
       >
-        <NavIcon src="/wait.svg" />
+        <span className="inline-flex origin-center motion-safe:group-hover/wait:animate-[spin_4s_linear_infinite] motion-safe:hover:animate-[spin_4s_linear_infinite]">
+          <NavIcon src="/wait.svg" />
+        </span>
       </span>
       <span
         className={cn(

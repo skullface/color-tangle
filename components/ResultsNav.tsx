@@ -1,6 +1,8 @@
-import { cn } from "@/lib/utils";
+"use client";
 
+import { Tooltip } from "@base-ui/react/tooltip";
 import { ResultsNavIcons } from "./ResultsNavIcons";
+import { cn } from "@/lib/utils";
 
 type ResultsNavProps = {
   roundNumber: number | null;
@@ -12,6 +14,24 @@ type ResultsNavProps = {
   onGoTo: (index: number) => void;
   onGoToResults: () => void;
 };
+
+function resultsIconTooltip({
+  showingResults,
+  resultsReachable,
+  frown,
+}: {
+  showingResults: boolean;
+  resultsReachable: boolean;
+  frown: boolean;
+}) {
+  if (showingResults) {
+    return frown ? "Maybe next time!" : "Nice work!";
+  }
+  if (resultsReachable) {
+    return "Go back to your score?";
+  }
+  return "Finish the game to see your score!";
+}
 
 export function ResultsNav({
   roundNumber,
@@ -31,6 +51,11 @@ export function ResultsNav({
       : `Round ${roundNumber} of ${totalRounds}`;
   const frown = correctCount <= totalRounds / 2;
   const canOpenResults = resultsReachable && !showingResults;
+  const tooltip = resultsIconTooltip({
+    showingResults,
+    resultsReachable,
+    frown,
+  });
 
   return (
     <div
@@ -85,25 +110,40 @@ export function ResultsNav({
           </span>
         );
       })}
-      <span
-        className={cn(
-          "relative bg-transparent p-2 border-0 text-current select-none",
-          showingResults ? "opacity-100" : "opacity-33",
-          canOpenResults && "hover:opacity-100",
-        )}
-      >
-        {canOpenResults ? (
-          <button
-            type="button"
-            onClick={onGoToResults}
-            aria-label="See results"
-            className="absolute inset-0 cursor-pointer border-0 bg-transparent"
-          />
-        ) : null}
-        <span aria-hidden={!showingResults}>
-          <ResultsNavIcons showingResults={showingResults} frown={frown} />
-        </span>
-      </span>
+      <Tooltip.Root>
+        <Tooltip.Trigger
+          delay={300}
+          aria-label={tooltip}
+          onClick={canOpenResults ? onGoToResults : undefined}
+          className={cn(
+            "group/wait bg-transparent p-2 border-0 text-current select-none",
+            showingResults ? "opacity-100" : "opacity-33",
+            canOpenResults
+              ? "cursor-pointer hover:opacity-100"
+              : "cursor-default",
+          )}
+        >
+          <span aria-hidden>
+            <ResultsNavIcons showingResults={showingResults} frown={frown} />
+          </span>
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Positioner sideOffset={8}>
+            <Tooltip.Popup
+              className={cn(
+                "font-franklin text-sm font-medium px-2 py-1 rounded-sm",
+                "bg-(--fg) text-(--bg)",
+                "origin-(--transform-origin)",
+                "transition-[transform,opacity] duration-100 ease-out",
+                "data-starting-style:opacity-0 data-starting-style:scale-[0.98]",
+                "data-ending-style:opacity-0 data-ending-style:scale-[0.98]",
+              )}
+            >
+              {tooltip}
+            </Tooltip.Popup>
+          </Tooltip.Positioner>
+        </Tooltip.Portal>
+      </Tooltip.Root>
     </div>
   );
 }
