@@ -446,27 +446,6 @@ export function Round({
                   />
                 </svg>
               </button>
-              {isPicked && (
-                <svg
-                  width="112"
-                  height="102"
-                  viewBox="0 0 112 102"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden
-                  className="pointer-events-none absolute top-[-12.5%] left-[-12.5%] max-w-[125%] w-[125%] h-[125%]"
-                >
-                  <path
-                    d="M19.7354 19.7158C31.0736 13.9876 42.0783 8.42786 48.5941 5.36843C57.0769 1.7663 62.7421 0.796999 73.3939 1.03348C79.587 2.25438 86.1588 3.10683 92.3369 11.2418C101.381 23.1505 111.068 39.0926 110.868 50.6754C110.653 63.2311 110.401 70.7142 106.131 76.1602C101.413 82.1772 96.3567 91.0155 81.4357 96.0284C71.4202 99.3933 54.4883 103.524 40.9921 97.6066C31.6613 93.5156 19.6965 88.4468 10.9519 75.2312C3.53392 64.0206 -0.354358 56.8726 1.42942 44.918C2.24556 39.4484 3.41834 34.8909 6.85876 32.2679C13.3925 27.2866 30.6371 14.6551 51.4235 12.7447C62.6374 11.7141 70.8697 11.1653 75.6573 10.6806"
-                    pathLength={1}
-                    stroke={optionStroke(color)}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="stroke-draw stroke-draw-selection"
-                  />
-                </svg>
-              )}
               {showingFeedback && isCorrect && (
                 <svg
                   width="34"
@@ -477,7 +456,7 @@ export function Round({
                   aria-hidden={!isPicked}
                   aria-label={isPicked ? "Correct" : undefined}
                   role={isPicked ? "img" : undefined}
-                  className="pointer-events-none absolute inset-0 top-[33%] left-[33%] max-w-[125%] w-[33%] h-[33%]"
+                  className="pointer-events-none absolute inset-0 top-[34%] left-[33%] w-[34%] h-[34%]"
                 >
                   <path
                     d="M11.4118 17.7752C12.5307 20.1864 14.8543 25.1104 15.1241 25.4706C16.2542 21.2615 19.3467 12.8128 20.9631 9.81645C21.2974 9.30464 21.6517 8.80078 22.7059 7.58826"
@@ -487,6 +466,38 @@ export function Round({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="stroke-draw stroke-draw-check"
+                  />
+                </svg>
+              )}
+              {showingFeedback && isPicked && !isCorrect && (
+                <svg
+                  height="21"
+                  viewBox="0 0 20 21"
+                  width="20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden={!isPicked}
+                  aria-label={isPicked ? "Incorrect" : undefined}
+                  role={isPicked ? "img" : undefined}
+                  className="pointer-events-none absolute inset-0 top-[41%] left-[41%] w-[20%] h-[20%]"
+                >
+                  <path
+                    d="m2.00193 1c-.01306.4612.01406 1.98682.94306 4.09303.4694 1.06421 1.63047 2.57902 3.27279 4.55875 1.64231 1.97972 3.86102 4.30682 5.46602 5.86432s2.5291 2.2749 3.1429 2.722c.6138.4472.8894.6022 1.1733.7619"
+                    pathLength={1}
+                    stroke={optionStroke(color)}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="stroke-draw stroke-draw-x"
+                  />
+                  <path
+                    d="m19 3c-.0071 0-.0142 0-.1359.04535-.1216.04535-.3575.13605-3.2917 2.8694s-8.55945 8.10665-14.5724 14.08525"
+                    pathLength={1}
+                    stroke={optionStroke(color)}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="stroke-draw stroke-draw-x stroke-draw-x-second"
                   />
                 </svg>
               )}
