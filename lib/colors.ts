@@ -10,7 +10,7 @@ export const DEFAULT_COLORS: Color[] = [
   {
     name: "Glaucous",
     hex: "#6082B6",
-    description: "Dusty blue-green",
+    description: "Dusty, muted blue",
     etymology:
       "From Greek “glaukos”, meaning gleaming, gray, or blue-green. Often loosely linked to “glaux” (owl) via Athena’s nickname “glaukōpis” (gray-eyed/owl-eyed).",
     source: "https://www.etymonline.com/word/glaucous",
@@ -335,6 +335,27 @@ function relativeLuminance(hex: string): number {
     0.7152 * srgbToLinear(g) +
     0.0722 * srgbToLinear(b)
   );
+}
+
+/** WCAG contrast ratio (1–21). Higher = more readable against the background. */
+export function contrastRatio(foreground: string, background: string): number {
+  const l1 = relativeLuminance(foreground);
+  const l2 = relativeLuminance(background);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/**
+ * Soft accent when contrast is strong; full strength when the color would
+ * otherwise wash out (e.g. pale yellow on white). Threshold is WCAG AA for
+ * UI / large text (3:1).
+ */
+export function softAccentColor(hex: string, backgroundHex: string): string {
+  if (contrastRatio(hex, backgroundHex) >= 3) {
+    return `color-mix(in srgb, ${hex} 50%, transparent)`;
+  }
+  return hex;
 }
 
 /** Near-white/near-black swatches need a border so they read on both themes. */

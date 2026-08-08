@@ -1,9 +1,31 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
-import { swatchBorder, swatchStroke, type Color } from "@/lib/colors";
+import {
+  softAccentColor,
+  swatchBorder,
+  swatchStroke,
+  type Color,
+} from "@/lib/colors";
 import { cn } from "@/lib/utils";
+
+function getBackgroundHex(): string {
+  return (
+    getComputedStyle(document.documentElement)
+      .getPropertyValue("--bg")
+      .trim() || "#ffffff"
+  );
+}
+
+function subscribeTheme(onStoreChange: () => void) {
+  const observer = new MutationObserver(onStoreChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+  return () => observer.disconnect();
+}
 
 export type RoundAnswer = {
   picked: Color;
@@ -41,6 +63,11 @@ export function Round({
   const picked = answer?.picked ?? null;
   const canGoBack = roundNumber > 1;
   const viewIndex = roundNumber - 1;
+  const backgroundHex = useSyncExternalStore(
+    subscribeTheme,
+    getBackgroundHex,
+    () => "#ffffff",
+  );
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -225,7 +252,18 @@ export function Round({
           {showingFeedback && (
             <>
               <p className="font-source-serif max-w-[56ch] text-center text-balance">
-                {target.description}. {target.etymology}
+                <span
+                  className="underline underline-offset-2"
+                  style={{
+                    textDecorationColor: softAccentColor(
+                      target.hex,
+                      backgroundHex,
+                    ),
+                  }}
+                >
+                  {target.description}
+                </span>
+                . {target.etymology}
                 &nbsp;
                 <a
                   href={target.source}
