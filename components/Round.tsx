@@ -214,6 +214,7 @@ export function Round({
                     />
                   </svg>
                 )}
+                {/*
                 {showingFeedback && isPicked && !isCorrect && (
                   <svg
                     width="100"
@@ -243,7 +244,8 @@ export function Round({
                       className="stroke-draw stroke-draw-x-second"
                     />
                   </svg>
-                )}
+                  */}
+                {/*)}*/}
               </div>
             );
           })}
