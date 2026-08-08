@@ -71,7 +71,7 @@ export function ResultsNav({
               }
               className={cn(
                 "group",
-                "p-2 first:pl-0",
+                "p-2",
                 "border-0 cursor-pointer",
                 "opacity-33 hover:opacity-100",
               )}
@@ -86,7 +86,7 @@ export function ResultsNav({
             key={i}
             aria-hidden
             className={cn(
-              "bg-transparent p-2 first:pl-0 border-0",
+              "bg-transparent p-2 border-0",
               isCurrent ? "opacity-100" : "opacity-33",
             )}
           >
@@ -103,7 +103,7 @@ export function ResultsNav({
       })}
       <Tooltip.Root>
         <Tooltip.Trigger
-          delay={300}
+          delay={100}
           aria-label={tooltip}
           onClick={canOpenResults ? onGoToResults : undefined}
           className={cn(
