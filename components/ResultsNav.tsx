@@ -54,12 +54,13 @@ export function ResultsNav({
                   : "Next color"
               }
               className={cn(
+                "group",
                 "p-2 first:pl-0",
                 "border-0 cursor-pointer",
                 "opacity-33 hover:opacity-100",
               )}
             >
-              <span className="block size-1.5 rounded-full bg-current" />
+              <span className="block size-2 rounded-full bg-transparent border border-current group-hover:bg-current" />
             </button>
           );
         }
@@ -73,7 +74,14 @@ export function ResultsNav({
               isCurrent ? "opacity-100" : "opacity-33",
             )}
           >
-            <span className="block size-1.5 rounded-full bg-current" />
+            <span
+              className={cn(
+                "block size-2 rounded-full",
+                isCurrent
+                  ? "bg-current"
+                  : "bg-transparent border border-current",
+              )}
+            />
           </span>
         );
       })}
