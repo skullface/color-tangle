@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { track } from "@vercel/analytics";
 
 import { buildOptions, pickRoundColors, type Color } from "@/lib/colors";
@@ -37,6 +37,7 @@ export function Game({ config }: { config: GameConfig }) {
   const [viewIndex, setViewIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
+  const [hasCompleted, setHasCompleted] = useState(false);
 
   function start() {
     track("quiz_start");
@@ -49,6 +50,7 @@ export function Game({ config }: { config: GameConfig }) {
     setViewIndex(0);
     setScore(0);
     setCorrectCount(0);
+    setHasCompleted(false);
     setPhase("playing");
   }
 
@@ -79,6 +81,9 @@ export function Game({ config }: { config: GameConfig }) {
       return;
     }
     setViewIndex(index);
+    if (phase === "results") {
+      setPhase("playing");
+    }
   }
 
   function goBack() {
@@ -91,20 +96,62 @@ export function Game({ config }: { config: GameConfig }) {
     }
 
     if (viewIndex >= targets.length - 1) {
-      track("quiz_complete", {
-        score,
-        correct: correctCount,
-      });
-      setPhase("results");
+      goToResults();
       return;
     }
 
     setViewIndex(viewIndex + 1);
   }
 
+  function goToResults() {
+    if (frontier !== -1) {
+      return;
+    }
+    if (!hasCompleted) {
+      track("quiz_complete", {
+        score,
+        correct: correctCount,
+      });
+      setHasCompleted(true);
+    }
+    setPhase("results");
+  }
+
+  useEffect(() => {
+    if (phase !== "results" || maxReachable < 0) {
+      return;
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "ArrowLeft") {
+        return;
+      }
+      event.preventDefault();
+      setViewIndex(maxReachable);
+      setPhase("playing");
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [phase, maxReachable]);
+
+  const resultsReachable = answers.length > 0 && frontier === -1;
+
+  const footerNav = (
+    <RoundNav
+      roundNumber={phase === "playing" ? viewIndex + 1 : null}
+      totalRounds={config.rounds}
+      maxReachable={maxReachable}
+      showingResults={phase === "results"}
+      resultsReachable={resultsReachable}
+      onGoTo={goTo}
+      onGoToResults={goToResults}
+    />
+  );
+
   if (phase === "start") {
     return (
-      <GameShell>
+      <GameShell footerNav={footerNav}>
         <main className="flex flex-col items-center justify-center gap-8">
           <h1 className="font-franklin text-3xl font-semibold">Color Tangle</h1>
           <p className="font-source-serif text-center text-balance">
@@ -125,7 +172,7 @@ export function Game({ config }: { config: GameConfig }) {
 
   if (phase === "results") {
     return (
-      <GameShell>
+      <GameShell footerNav={footerNav}>
         <Results
           score={score}
           correct={correctCount}
@@ -137,16 +184,7 @@ export function Game({ config }: { config: GameConfig }) {
   }
 
   return (
-    <GameShell
-      footerNav={
-        <RoundNav
-          roundNumber={viewIndex + 1}
-          totalRounds={config.rounds}
-          maxReachable={maxReachable}
-          onGoTo={goTo}
-        />
-      }
-    >
+    <GameShell footerNav={footerNav}>
       <Round
         target={targets[viewIndex]}
         options={optionsByRound[viewIndex]}

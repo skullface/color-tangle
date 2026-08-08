@@ -55,28 +55,40 @@ type Props = {
 };
 
 type RoundNavProps = {
-  roundNumber: number;
+  /** 1-based round, or `null` when no round is active (start / results). */
+  roundNumber: number | null;
   totalRounds: number;
   maxReachable: number;
+  showingResults: boolean;
+  resultsReachable: boolean;
   onGoTo: (index: number) => void;
+  onGoToResults: () => void;
 };
 
 export function RoundNav({
   roundNumber,
   totalRounds,
   maxReachable,
+  showingResults,
+  resultsReachable,
   onGoTo,
+  onGoToResults,
 }: RoundNavProps) {
-  const viewIndex = roundNumber - 1;
+  const viewIndex = roundNumber === null ? -1 : roundNumber - 1;
+  const ariaLabel = showingResults
+    ? "Results"
+    : roundNumber === null
+      ? `${totalRounds} colors`
+      : `Round ${roundNumber} of ${totalRounds}`;
 
   return (
     <div
       role="navigation"
-      aria-label={`Round ${roundNumber} of ${totalRounds}`}
+      aria-label={ariaLabel}
       className="flex justify-center items-center mb-2"
     >
       {Array.from({ length: totalRounds }, (_, i) => {
-        const isCurrent = i === viewIndex;
+        const isCurrent = !showingResults && i === viewIndex;
         const canNavigate = !isCurrent && i <= maxReachable;
 
         if (canNavigate) {
@@ -85,7 +97,11 @@ export function RoundNav({
               key={i}
               type="button"
               onClick={() => onGoTo(i)}
-              aria-label={i < viewIndex ? `Go to color ${i + 1}` : "Next color"}
+              aria-label={
+                viewIndex < 0 || i < viewIndex
+                  ? `Go to color ${i + 1}`
+                  : "Next color"
+              }
               className={cn(
                 "p-2 first:pl-0",
                 "border-0 cursor-pointer",
@@ -110,6 +126,26 @@ export function RoundNav({
           </span>
         );
       })}
+      {resultsReachable && !showingResults ? (
+        <button
+          type="button"
+          onClick={onGoToResults}
+          aria-label="See results"
+          className="p-2 border-0 cursor-pointer opacity-33 hover:opacity-100 text-current select-none text-[0.6rem]"
+        >
+          &#9733;
+        </button>
+      ) : (
+        <span
+          aria-hidden={!showingResults}
+          className={cn(
+            "bg-transparent p-2 border-0 text-current select-none text-[0.6rem]",
+            showingResults ? "opacity-100" : "opacity-33",
+          )}
+        >
+          &#9733;
+        </span>
+      )}
     </div>
   );
 }
