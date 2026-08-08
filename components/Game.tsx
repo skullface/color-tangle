@@ -10,7 +10,7 @@ import { scoreRound, type Answer } from "@/lib/scoring";
 
 import { Results } from "./Results";
 import { ResultsNav } from "./ResultsNav";
-import { Round } from "./round";
+import { Round } from "./round/Round";
 
 type Phase = "start" | "playing" | "results";
 
