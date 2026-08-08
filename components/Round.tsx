@@ -74,12 +74,9 @@ function getThemeColors(): ThemeColors {
 }
 
 function subscribeTheme(onStoreChange: () => void) {
-  const observer = new MutationObserver(onStoreChange);
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
-  });
-  return () => observer.disconnect();
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  media.addEventListener("change", onStoreChange);
+  return () => media.removeEventListener("change", onStoreChange);
 }
 
 export type RoundAnswer = {

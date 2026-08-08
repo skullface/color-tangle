@@ -6,10 +6,12 @@
   color-scheme: light;
 }
 
-[data-theme="dark"] {
-  --bg: #111111;
-  --fg: #f0f0f0;
-  color-scheme: dark;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111111;
+    --fg: #f0f0f0;
+    color-scheme: dark;
+  }
 }
 
 @theme {  
