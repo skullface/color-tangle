@@ -106,7 +106,7 @@ export function Round({
       <div
         role="navigation"
         aria-label={`Round ${roundNumber} of ${totalRounds}`}
-        className="flex items-center gap-4 py-2 h-12"
+        className="flex items-center gap-1 py-2 h-12"
       >
         {Array.from({ length: totalRounds }, (_, i) => {
           const isCurrent = i === viewIndex;
@@ -121,9 +121,12 @@ export function Round({
                 aria-label={
                   i < viewIndex ? `Go to color ${i + 1}` : "Next color"
                 }
-                className="size-1 rounded-full bg-current p-0 border-0 cursor-pointer"
-                style={{ opacity: 0.33 }}
-              />
+                className={cn(
+                  "p-1 border-0 cursor-pointer opacity-33 hover:opacity-50",
+                )}
+              >
+                <span className="block size-1 rounded-full bg-current" />
+              </button>
             );
           }
 
@@ -131,9 +134,13 @@ export function Round({
             <span
               key={i}
               aria-hidden
-              className="size-1 rounded-full bg-current"
-              style={{ opacity: isCurrent ? 1 : 0.33 }}
-            />
+              className={cn(
+                "bg-transparent p-1 border-0",
+                isCurrent ? "opacity-100" : "opacity-33",
+              )}
+            >
+              <span className="block size-1 rounded-full bg-current" />
+            </span>
           );
         })}
       </div>
