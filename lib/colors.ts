@@ -20,7 +20,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#FFFFEE",
     description: "Creamy off-white",
     etymology:
-      "From Latin “eburneus”: “made of ivory.”",
+      "From Latin “eburneus” meaning “made of ivory.”",
     source: "https://en.wiktionary.org/wiki/eburnean",
   },
   {
@@ -157,7 +157,7 @@ export const DEFAULT_COLORS: Color[] = [
     name: "Cinereous",
     hex: "#98817B",
     description: "Warm ash gray",
-    etymology: "From Latin “cinereus” meaning ashen.",
+    etymology: "From Latin “cinereus” meaning ashen. Chiefly used to describe birds.",
     source: "https://en.wiktionary.org/wiki/cinereous",
   },
   {
@@ -195,7 +195,7 @@ export const DEFAULT_COLORS: Color[] = [
     name: "Rufous",
     hex: "#A81C07",
     description: "Rusty, reddish brown",
-    etymology: "From Latin “rufus,” meaning red.",
+    etymology: "From Latin “rufus,” meaning red or red-haired.",
     source: "https://en.wiktionary.org/wiki/rufus",
   },
   {
