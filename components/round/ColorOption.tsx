@@ -1,7 +1,8 @@
 import type { CSSProperties } from "react";
 import { BLOB_EDGE } from "@/lib/blobs";
-import { swatchStroke, type Color } from "@/lib/colors";
+import { softAccentColor, swatchStroke, type Color } from "@/lib/colors";
 import { cn } from "@/lib/utils";
+import { useThemeColors } from "./useThemeColors";
 
 type ColorOptionProps = {
   color: Color;
@@ -20,7 +21,9 @@ export function ColorOption({
   isCorrect,
   onAnswer,
 }: ColorOptionProps) {
+  const { bg, fg } = useThemeColors();
   const stroke = swatchStroke(color.hex);
+  const ring = softAccentColor(color.hex, bg, fg);
 
   return (
     <div className="relative w-30 h-30">
@@ -34,7 +37,7 @@ export function ColorOption({
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ring)",
           !revealed && "cursor-pointer hover:scale-105",
         )}
-        style={{ "--ring": color.hex } as CSSProperties}
+        style={{ "--ring": ring } as CSSProperties}
       >
         <svg
           viewBox="0 0 100 100"
