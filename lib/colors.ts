@@ -328,13 +328,28 @@ export function buildOptions(correct: Color, pool: Color[]): Color[] {
   return shuffle([correct, ...distractors]);
 }
 
+function relativeLuminance(hex: string): number {
+  const [r, g, b] = hexToRgb(hex);
+  return (
+    0.2126 * srgbToLinear(r) +
+    0.7152 * srgbToLinear(g) +
+    0.0722 * srgbToLinear(b)
+  );
+}
+
 /** Near-white/near-black swatches need a border so they read on both themes. */
 export function swatchBorder(hex: string): string {
-  const [r, g, b] = hexToRgb(hex);
-  const luminance =
-    0.2126 * srgbToLinear(r) + 0.7152 * srgbToLinear(g) + 0.0722 * srgbToLinear(b);
+  const luminance = relativeLuminance(hex);
   if (luminance > 0.9 || luminance < 0.08) {
     return "inset 0 0 0 1px rgba(0, 0, 0, 0.1)";
   }
   return "inset 0 0 0 1px rgba(0, 0, 0, 0.1)";
+}
+
+/** Stroke that contrasts with the swatch in both light and dark themes. */
+export function swatchStroke(hex: string): string {
+  // Dark ink on light swatches, light ink on dark ones (via light-dark + color-scheme).
+  return relativeLuminance(hex) > 0.4
+    ? "light-dark(var(--fg), var(--bg))"
+    : "light-dark(var(--bg), var(--fg))";
 }
