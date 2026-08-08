@@ -12,7 +12,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#6082B6",
     description: "Dusty, muted blue",
     etymology:
-      "From Greek “glaukos”, meaning gleaming, gray, or blue-green. Often loosely linked to “glaux” (owl) via Athena’s nickname “glaukōpis” (gray-eyed/owl-eyed).",
+      "From Greek “glaukos”, meaning gleaming, gray, or blue-green, reflecting the color of the ocean.",
     source: "https://www.etymonline.com/word/glaucous",
   },
   {
@@ -104,7 +104,7 @@ export const DEFAULT_COLORS: Color[] = [
     hex: "#592720",
     description: "Dark, dead, red-purple brown",
     etymology:
-      "Latin for “dead head,” likely derived from the same alchemical term for the residue left after a reaction.",
+      "Latin for “dead head,” likely derived from the same alchemical term.",
     source: "https://en.wikipedia.org/wiki/Caput_mortuum_(pigment)",
   },
   {
