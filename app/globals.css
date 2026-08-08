@@ -26,3 +26,53 @@ body {
 a {
   color: inherit;
 }
+
+@keyframes stroke-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes stroke-draw-check {
+  0% {
+    visibility: hidden;
+    stroke-dashoffset: 1;
+  }
+
+  0.01% {
+    visibility: visible;
+    stroke-dashoffset: 1;
+  }
+
+  100% {
+    visibility: visible;
+    stroke-dashoffset: 0;
+  }
+}
+
+.stroke-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: stroke-draw 350ms ease-out forwards;
+}
+
+.stroke-draw-selection {
+  stroke-dashoffset: -1;
+  animation-duration: 180ms;
+  animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.45);
+}
+
+.stroke-draw-check {
+  animation-name: stroke-draw-check;
+  animation-delay: 65ms;
+  animation-duration: 280ms;
+  animation-timing-function: cubic-bezier(0.5, 0, 0.15, 1);
+  animation-fill-mode: both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stroke-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
