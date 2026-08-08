@@ -51,26 +51,44 @@ export function Results({ score, correct, total, onReplay }: Props) {
   }
 
   return (
-    <section>
-      <h1>Done!</h1>
-      <p>Score: {score}</p>
-      <p>
-        {correct}/{total} correct
-      </p>
-      <div>
-        <button type="button" onClick={handleShare}>
+    <main className="flex flex-col items-center justify-center gap-8">
+      <h1 className="font-franklin text-3xl font-semibold">Done!</h1>
+      <div className="font-source-serif text-center">
+        <p>Score: {score}</p>
+        <p>
+          {correct}/{total} correct
+        </p>
+      </div>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <button
+          type="button"
+          onClick={handleShare}
+          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
+        >
           Share
         </button>
-        <button type="button" onClick={handleXShare}>
+        <button
+          type="button"
+          onClick={handleXShare}
+          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
+        >
           Post on X
         </button>
-        <button type="button" onClick={handleCopy}>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
+        >
           {copied ? "Copied!" : "Copy link"}
         </button>
       </div>
-      <button type="button" onClick={onReplay}>
+      <button
+        type="button"
+        onClick={onReplay}
+        className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
+      >
         Play again
       </button>
-    </section>
+    </main>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { track } from "@vercel/analytics";
 
 import { buildOptions, pickRoundColors, type Color } from "@/lib/colors";
@@ -8,9 +8,26 @@ import type { GameConfig } from "@/lib/config";
 import { scoreRound } from "@/lib/scoring";
 
 import { Results } from "./Results";
-import { Round, type RoundAnswer } from "./Round";
+import { Round, RoundNav, type RoundAnswer } from "./Round";
 
 type Phase = "start" | "playing" | "results";
+
+function GameShell({
+  children,
+  footerNav,
+}: {
+  children: ReactNode;
+  footerNav?: ReactNode;
+}) {
+  return (
+    <div className="flex min-h-dvh flex-col">
+      <div className="flex-1 lg:flex lg:items-center lg:justify-center max-md:pt-10 max-md:px-6">
+        {children}
+      </div>
+      <footer className="font-source-serif text-sm">{footerNav}</footer>
+    </div>
+  );
+}
 
 export function Game({ config }: { config: GameConfig }) {
   const [phase, setPhase] = useState<Phase>("start");
@@ -36,7 +53,8 @@ export function Game({ config }: { config: GameConfig }) {
   }
 
   const frontier = answers.findIndex((answer) => answer === null);
-  const maxReachable = frontier === -1 ? answers.length - 1 : frontier;
+  const maxReachable =
+    phase === "start" ? -1 : frontier === -1 ? answers.length - 1 : frontier;
 
   function handleAnswer(picked: Color) {
     if (answers[viewIndex]) {
@@ -86,39 +104,59 @@ export function Game({ config }: { config: GameConfig }) {
 
   if (phase === "start") {
     return (
-      <section>
-        <h1>Color Tangle</h1>
-        <p>Match the color name to the swatch. {config.rounds} rounds.</p>
-        <button type="button" onClick={start}>
-          Start
-        </button>
-      </section>
+      <GameShell>
+        <main className="flex flex-col items-center justify-center gap-8">
+          <h1 className="font-franklin text-3xl font-semibold">Color Tangle</h1>
+          <p className="font-source-serif text-center text-balance">
+            Match the color name to its swatch. Inspired by the Iron Tangle from{" "}
+            <cite>The Dungeon Anarchist’s Cookbook</cite> by Matt Dinniman.
+          </p>
+          <button
+            type="button"
+            onClick={start}
+            className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
+          >
+            Start
+          </button>
+        </main>
+      </GameShell>
     );
   }
 
   if (phase === "results") {
     return (
-      <Results
-        score={score}
-        correct={correctCount}
-        total={config.rounds}
-        onReplay={start}
-      />
+      <GameShell>
+        <Results
+          score={score}
+          correct={correctCount}
+          total={config.rounds}
+          onReplay={start}
+        />
+      </GameShell>
     );
   }
 
   return (
-    <Round
-      target={targets[viewIndex]}
-      options={optionsByRound[viewIndex]}
-      answer={answers[viewIndex]}
-      roundNumber={viewIndex + 1}
-      totalRounds={config.rounds}
-      maxReachable={maxReachable}
-      onAnswer={handleAnswer}
-      onGoTo={goTo}
-      onBack={goBack}
-      onNext={goNext}
-    />
+    <GameShell
+      footerNav={
+        <RoundNav
+          roundNumber={viewIndex + 1}
+          totalRounds={config.rounds}
+          maxReachable={maxReachable}
+          onGoTo={goTo}
+        />
+      }
+    >
+      <Round
+        target={targets[viewIndex]}
+        options={optionsByRound[viewIndex]}
+        answer={answers[viewIndex]}
+        roundNumber={viewIndex + 1}
+        totalRounds={config.rounds}
+        onAnswer={handleAnswer}
+        onBack={goBack}
+        onNext={goNext}
+      />
+    </GameShell>
   );
 }

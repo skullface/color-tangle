@@ -36,7 +36,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <div style={{ position: "fixed", top: 12, right: 12 }}>
+        <div style={{ position: "fixed", bottom: 12, left: 12 }}>
           <ThemeToggle />
         </div>
         {children}
