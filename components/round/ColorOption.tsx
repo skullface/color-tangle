@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { BLOB_EDGE } from "@/lib/blobs";
 import { swatchStroke, type Color } from "@/lib/colors";
 import { cn } from "@/lib/utils";
@@ -29,9 +30,11 @@ export function ColorOption({
         aria-label={color.name}
         onClick={() => onAnswer(color)}
         className={cn(
-          "size-full border-0 bg-transparent p-0 transition-transform duration-75",
+          "size-full border-0 rounded-md bg-transparent p-0 transition-transform duration-75",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ring)",
           !revealed && "cursor-pointer hover:scale-105",
         )}
+        style={{ "--ring": color.hex } as CSSProperties}
       >
         <svg
           viewBox="0 0 100 100"

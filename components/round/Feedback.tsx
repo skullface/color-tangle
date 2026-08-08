@@ -1,7 +1,10 @@
 "use client";
 
+import type { CSSProperties } from "react";
+import Link from "next/link";
 import { softAccentColor, type Color } from "@/lib/colors";
 import { useThemeColors } from "./useThemeColors";
+import { cn } from "@/lib/utils";
 
 type FeedbackProps = {
   target: Color;
@@ -24,25 +27,40 @@ export function Feedback({
       <p className="font-source-serif max-w-[62ch] text-center text-balance">
         {target.description}. {target.etymology}
         &nbsp;
-        <a
+        <Link
           href={target.source}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:decoration-inherit! underline underline-offset-2 italic"
-          style={{
-            textDecorationColor: accent,
-          }}
+          className={cn(
+            "hover:decoration-inherit! underline underline-offset-2 italic",
+            "rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)",
+          )}
+          style={
+            {
+              textDecorationColor: accent,
+              "--accent": accent,
+            } as CSSProperties
+          }
         >
           (Source)
-        </a>
+        </Link>
       </p>
       <button
         type="button"
         onClick={onNext}
-        className="group cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border hover:bg-(--fg) hover:text-(--bg) hover:border-(--fg)!"
-        style={{
-          borderColor: accent,
-        }}
+        className={cn(
+          "group cursor-pointer py-2 px-3",
+          "rounded-sm border",
+          "text-sm font-franklin font-semibold",
+          "hover:bg-(--fg) hover:text-(--bg) hover:border-(--fg)!",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)",
+        )}
+        style={
+          {
+            borderColor: accent,
+            "--accent": accent,
+          } as CSSProperties
+        }
       >
         {roundNumber === totalRounds ? "See results" : "Next color"}
         &nbsp;
