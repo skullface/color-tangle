@@ -145,7 +145,7 @@ export function Round({
         })}
       </div>
       <div className="flex flex-col items-center justify-center gap-8">
-        <p className="font-newsreader text-center">
+        <p className="font-newsreader text-center text-lg">
           What does{" "}
           <strong className="font-semibold font-franklin px-px">
             {target.name.toLowerCase()}
@@ -228,7 +228,8 @@ export function Round({
         <div id="feedback" className="flex flex-col items-center gap-4 h-34">
           {showingFeedback && (
             <>
-              <p className="font-source-serif max-w-[56ch] text-center text-balance">
+              <p className="font-source-serif max-w-[60ch] text-center text-balance">
+                {" "}
                 <span
                   className="underline underline-offset-2"
                   style={{
@@ -254,7 +255,10 @@ export function Round({
               <button
                 type="button"
                 onClick={onNext}
-                className="group cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold hover:bg-(--fg) hover:text-(--bg)"
+                className="group cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border hover:bg-(--fg) hover:text-(--bg) hover:border-(--fg)!"
+                style={{
+                  borderColor: softAccentColor(target.hex, backgroundHex),
+                }}
                 aria-label="Next color"
               >
                 Next&nbsp;
