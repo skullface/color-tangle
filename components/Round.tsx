@@ -4,7 +4,6 @@ import { useEffect, useSyncExternalStore } from "react";
 
 import {
   softAccentColor,
-  swatchBorder,
   swatchStroke,
   type Color,
 } from "@/lib/colors";
@@ -14,6 +13,52 @@ type ThemeColors = { bg: string; fg: string };
 
 const serverThemeColors: ThemeColors = { bg: "#ffffff", fg: "#111111" };
 let cachedThemeColors: ThemeColors = serverThemeColors;
+
+/**
+ * Squarish organic blobs: each side uses two cubics so mid-edges
+ * bulge or dip instead of reading as a plain rounded rect.
+ */
+const OPTION_BLOB_PATHS = [
+  // Top dips mid, right bulges, bottom waves, left tucks
+  [
+    "M20 16",
+    "C34 8 42 20 55 12C68 6 76 14 82 16",
+    "C92 24 90 38 94 52C96 66 90 78 84 86",
+    "C74 96 58 90 46 94C34 98 24 90 18 86",
+    "C10 76 12 60 8 48C6 34 12 22 20 16",
+    "Z",
+  ].join(""),
+  // Flatter top-left, right dips in, bottom-right heavy, left bows out
+  [
+    "M18 20",
+    "C32 10 48 8 62 10C74 12 84 18 86 24",
+    "C94 36 88 48 92 60C94 74 86 86 74 90",
+    "C60 96 46 92 34 94C22 96 12 86 12 74",
+    "C8 60 4 46 10 34C14 26 12 24 18 20",
+    "Z",
+  ].join(""),
+  // Top rises right, right soft, bottom tucked left, left mid-bulge
+  [
+    "M22 14",
+    "C38 10 50 6 64 8C76 10 86 16 88 22",
+    "C96 34 94 48 90 62C88 76 78 88 66 90",
+    "C52 96 40 90 28 92C18 90 10 80 10 68",
+    "C6 54 4 40 12 28C16 20 14 16 22 14",
+    "Z",
+  ].join(""),
+  // Slightly cocked: top waves, right high bulge, bottom flat-ish, left dips
+  [
+    "M16 22",
+    "C28 12 40 16 54 10C66 6 78 14 82 18",
+    "C92 28 96 42 94 56C96 70 88 84 76 90",
+    "C64 96 50 92 38 94C26 96 14 88 12 76",
+    "C8 62 4 48 10 36C12 28 10 26 16 22",
+    "Z",
+  ].join(""),
+] as const;
+
+const BLOB_EDGE =
+  "color-mix(in srgb, var(--fg) 12%, transparent)";
 
 function getThemeColors(): ThemeColors {
   const styles = getComputedStyle(document.documentElement);
@@ -194,10 +239,6 @@ export function Round({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [canGoBack, showingFeedback, onBack, onNext]);
 
-  function optionBorder(color: Color): string {
-    return swatchBorder(color.hex);
-  }
-
   function optionStroke(color: Color): string {
     return swatchStroke(color.hex);
   }
@@ -216,9 +257,11 @@ export function Round({
         aria-label="Color options"
         className="flex flex-wrap gap-6 mx-6 items-center justify-center"
       >
-        {options.map((color) => {
+        {options.map((color, index) => {
           const isPicked = picked?.name === color.name;
           const isCorrect = color.name === target.name;
+          const blobPath =
+            OPTION_BLOB_PATHS[index % OPTION_BLOB_PATHS.length];
 
           return (
             <div key={color.name} className="relative w-25 h-25">
@@ -228,14 +271,24 @@ export function Round({
                 aria-label={color.name}
                 onClick={() => onAnswer(color)}
                 className={cn(
-                  "size-full rounded-sm transition-transform duration-75",
+                  "size-full border-0 bg-transparent p-0 transition-transform duration-75",
                   !showingFeedback && "cursor-pointer hover:scale-105",
                 )}
-                style={{
-                  backgroundColor: color.hex,
-                  boxShadow: optionBorder(color),
-                }}
-              />
+              >
+                <svg
+                  viewBox="0 0 100 100"
+                  className="size-full overflow-visible"
+                  aria-hidden
+                >
+                  <path
+                    d={blobPath}
+                    fill={color.hex}
+                    stroke={BLOB_EDGE}
+                    strokeWidth={1}
+                    vectorEffect="non-scaling-stroke"
+                  />
+                </svg>
+              </button>
               {isPicked && (
                 <svg
                   width="112"
