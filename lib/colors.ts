@@ -346,25 +346,55 @@ export function contrastRatio(foreground: string, background: string): number {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
+function mixHex(a: string, b: string, amountA: number): string {
+  const [ar, ag, ab] = hexToRgb(a);
+  const [br, bg, bb] = hexToRgb(b);
+  const t = amountA;
+  const toHex = (n: number) =>
+    Math.round(n).toString(16).padStart(2, "0");
+  return `#${toHex(ar * t + br * (1 - t))}${toHex(ag * t + bg * (1 - t))}${toHex(ab * t + bb * (1 - t))}`;
+}
+
+/** Soft-over-bg luminance gap below this → pull toward foreground. */
+const SOFT_LIGHTNESS_GAP = 0.12;
+
 /**
- * Soft accent when contrast is strong; full strength when the color would
- * otherwise wash out (e.g. pale yellow on white). Threshold is WCAG AA for
- * UI / large text (3:1).
+ * Soft accent when contrast is strong; blend with foreground when the color
+ * (or a soft transparent mix) wouldn't read against the background. Soft
+ * threshold is WCAG AA for UI / large text (3:1).
  */
-export function softAccentColor(hex: string, backgroundHex: string): string {
+export function softAccentColor(
+  hex: string,
+  backgroundHex: string,
+  foregroundHex: string,
+): string {
+  const withFg = `color-mix(in srgb, ${hex} 80%, ${foregroundHex})`;
+
   if (contrastRatio(hex, backgroundHex) >= 3) {
-    return `color-mix(in srgb, ${hex} 50%, transparent)`;
+    // Transparent 50% over opaque bg ≈ a 50/50 mix with the background.
+    const softOverBg = mixHex(hex, backgroundHex, 0.5);
+    const softGap = Math.abs(
+      relativeLuminance(softOverBg) - relativeLuminance(backgroundHex),
+    );
+    if (softGap >= SOFT_LIGHTNESS_GAP) {
+      return `color-mix(in srgb, ${hex} 50%, transparent)`;
+    }
+    return withFg;
   }
-  return hex;
+
+  // Low contrast at full strength (Eburnean, Xanthic on white) → pull toward fg.
+  return withFg;
 }
 
 /** Near-white/near-black swatches need a border so they read on both themes. */
 export function swatchBorder(hex: string): string {
   const luminance = relativeLuminance(hex);
+  // --fg is dark in light mode and light in dark mode.
+  const edge = "inset 0 0 0 1px color-mix(in srgb, var(--fg) 10%, transparent)";
   if (luminance > 0.9 || luminance < 0.08) {
-    return "inset 0 0 0 1px rgba(0, 0, 0, 0.1)";
+    return edge;
   }
-  return "inset 0 0 0 1px rgba(0, 0, 0, 0.1)";
+  return edge;
 }
 
 /** Stroke that contrasts with the swatch in both light and dark themes. */

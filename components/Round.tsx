@@ -10,12 +10,22 @@ import {
 } from "@/lib/colors";
 import { cn } from "@/lib/utils";
 
-function getBackgroundHex(): string {
-  return (
-    getComputedStyle(document.documentElement)
-      .getPropertyValue("--bg")
-      .trim() || "#ffffff"
-  );
+type ThemeColors = { bg: string; fg: string };
+
+const serverThemeColors: ThemeColors = { bg: "#ffffff", fg: "#111111" };
+let cachedThemeColors: ThemeColors = serverThemeColors;
+
+function getThemeColors(): ThemeColors {
+  const styles = getComputedStyle(document.documentElement);
+  const next: ThemeColors = {
+    bg: styles.getPropertyValue("--bg").trim() || "#ffffff",
+    fg: styles.getPropertyValue("--fg").trim() || "#111111",
+  };
+  if (next.bg === cachedThemeColors.bg && next.fg === cachedThemeColors.fg) {
+    return cachedThemeColors;
+  }
+  cachedThemeColors = next;
+  return cachedThemeColors;
 }
 
 function subscribeTheme(onStoreChange: () => void) {
@@ -63,10 +73,10 @@ export function Round({
   const picked = answer?.picked ?? null;
   const canGoBack = roundNumber > 1;
   const viewIndex = roundNumber - 1;
-  const backgroundHex = useSyncExternalStore(
+  const { bg: backgroundHex, fg: foregroundHex } = useSyncExternalStore(
     subscribeTheme,
-    getBackgroundHex,
-    () => "#ffffff",
+    getThemeColors,
+    () => serverThemeColors,
   );
 
   useEffect(() => {
@@ -257,12 +267,25 @@ export function Round({
                 onClick={onNext}
                 className="group cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border hover:bg-(--fg) hover:text-(--bg) hover:border-(--fg)!"
                 style={{
-                  borderColor: softAccentColor(target.hex, backgroundHex),
+                  borderColor: softAccentColor(
+                    target.hex,
+                    backgroundHex,
+                    foregroundHex,
+                  ),
                 }}
-                aria-label="Next color"
               >
                 Next&nbsp;
-                <span className="opacity-50 group-hover:opacity-100">
+                &nbsp;
+                <span
+                  className="group-hover:text-inherit!"
+                  style={{
+                    color: softAccentColor(
+                      target.hex,
+                      backgroundHex,
+                      foregroundHex,
+                    ),
+                  }}
+                >
                   &rarr;
                 </span>
               </button>
