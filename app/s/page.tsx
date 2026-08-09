@@ -12,14 +12,23 @@ export async function generateMetadata({
   const { t } = await searchParams;
   const correct = verifyShareToken(t);
   const token = signCorrect(correct);
+  const title = "Color Tangle: Quiz guessing game";
+  const description = `I guessed ${correct}/10 correctly. How many rare, weird color names do you know?`;
+  const image = buildOgPath(token);
 
   return {
-    title: `Color Tangle: Quiz guessing game`,
-    description: `I guessed ${correct}/10 correctly. How many rare, weird color names do you know?`,
+    title,
+    description,
     openGraph: {
-      title: `Color Tangle: Quiz guessing game`,
-      description: `I guessed ${correct}/10 correctly. How many rare, weird color names do you know?`,
-      images: [buildOgPath(token)],
+      title,
+      description,
+      images: [image],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
     },
   };
 }
