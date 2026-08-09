@@ -22,10 +22,14 @@ function getShareSecret(): string {
   return secret;
 }
 
+/** Truncated HMAC length in base64url chars (~48 bits). */
+const SIG_CHARS = 8;
+
 function signPayload(value: string): string {
   return createHmac("sha256", getShareSecret())
     .update(`v1:${value}`)
-    .digest("base64url");
+    .digest("base64url")
+    .slice(0, SIG_CHARS);
 }
 
 /** Mint a tamper-evident share token for a clamped score. Server-only. */
