@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 type RoundNavProps = {
   roundNumber: number | null;
   totalRounds: number;
+  roundNames: string[];
   correctCount: number;
   maxReachable: number;
   showingResults: boolean;
@@ -14,6 +15,15 @@ type RoundNavProps = {
   onGoTo: (index: number) => void;
   onGoToResults: () => void;
 };
+
+const tooltipPopupClassName = cn(
+  "font-franklin text-sm font-medium px-2 py-1 rounded-sm",
+  "bg-(--fg) text-(--bg)",
+  "origin-(--transform-origin)",
+  "transition-[transform,opacity] duration-100 ease-out",
+  "data-starting-style:opacity-0 data-starting-style:scale-[0.98]",
+  "data-ending-style:opacity-0 data-ending-style:scale-[0.98]",
+);
 
 function outcomeIconTooltip({
   resultsReachable,
@@ -31,6 +41,7 @@ function outcomeIconTooltip({
 export function RoundNav({
   roundNumber,
   totalRounds,
+  roundNames,
   correctCount,
   maxReachable,
   showingResults,
@@ -57,29 +68,34 @@ export function RoundNav({
       {Array.from({ length: totalRounds }, (_, i) => {
         const isCurrent = !showingResults && i === viewIndex;
         const canNavigate = !isCurrent && i <= maxReachable;
+        const name = roundNames[i];
 
-        if (canNavigate) {
+        if (canNavigate && name) {
           return (
-            <button
-              key={i}
-              type="button"
-              onClick={() => onGoTo(i)}
-              aria-label={
-                viewIndex < 0 || i < viewIndex
-                  ? `Go to color ${i + 1}`
-                  : "Next color"
-              }
-              className={cn(
-                "group",
-                "p-2 rounded-full cursor-pointer",
-                "focus:outline-none focus-visible:opacity-100",
-              )}
-            >
-              <span
-                className="block size-2 rounded-full bg-transparent ring ring-current group-hover:bg-current 
-                opacity-33 group-hover:opacity-100  group-focus-visible:ring group-focus-visible:ring-(--fg) group-focus-visible:bg-(--fg)"
-              />
-            </button>
+            <Tooltip.Root key={i}>
+              <Tooltip.Trigger
+                delay={50}
+                onClick={() => onGoTo(i)}
+                aria-label={`Go to ${name}`}
+                className={cn(
+                  "group",
+                  "p-2 rounded-full cursor-pointer",
+                  "focus:outline-none focus-visible:opacity-100",
+                )}
+              >
+                <span
+                  className="block size-2 rounded-full bg-transparent ring ring-current group-hover:bg-current 
+                  opacity-33 group-hover:opacity-100  group-focus-visible:ring group-focus-visible:ring-(--fg) group-focus-visible:bg-(--fg)"
+                />
+              </Tooltip.Trigger>
+              <Tooltip.Portal>
+                <Tooltip.Positioner sideOffset={8}>
+                  <Tooltip.Popup className={tooltipPopupClassName}>
+                    {name}
+                  </Tooltip.Popup>
+                </Tooltip.Positioner>
+              </Tooltip.Portal>
+            </Tooltip.Root>
           );
         }
 
@@ -94,8 +110,8 @@ export function RoundNav({
           >
             <span
               className={cn(
-                "block size-2 rounded-full",
-                isCurrent ? "bg-current" : "bg-transparent ring ring-current",
+                "block size-2 rounded-full ring ring-current",
+                isCurrent ? "bg-current" : "bg-transparent",
               )}
             />
           </span>
@@ -121,16 +137,7 @@ export function RoundNav({
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Positioner sideOffset={8}>
-            <Tooltip.Popup
-              className={cn(
-                "font-franklin text-sm font-medium px-2 py-1 rounded-sm",
-                "bg-(--fg) text-(--bg)",
-                "origin-(--transform-origin)",
-                "transition-[transform,opacity] duration-100 ease-out",
-                "data-starting-style:opacity-0 data-starting-style:scale-[0.98]",
-                "data-ending-style:opacity-0 data-ending-style:scale-[0.98]",
-              )}
-            >
+            <Tooltip.Popup className={tooltipPopupClassName}>
               {tooltip}
             </Tooltip.Popup>
           </Tooltip.Positioner>
