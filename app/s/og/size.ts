@@ -1,0 +1,1 @@
+export const size = { width: 2400, height: 1260 } as const;

@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { size } from "@/app/s/og/size";
 
 export const metadata: Metadata = {
-  title: "OG preview (dev)",
+  title: "OG preview",
   robots: { index: false, follow: false },
 };
 
@@ -10,16 +11,13 @@ type Props = {
   searchParams: Promise<{ score?: string; correct?: string }>;
 };
 
-const OG_WIDTH = 1200;
-const OG_HEIGHT = 630;
-
 export default async function DevOgPreview({ searchParams }: Props) {
   if (process.env.NODE_ENV !== "development") {
     notFound();
   }
 
   const { score = "700", correct = "7" } = await searchParams;
-  const imageSrc = `/s/opengraph-image?score=${encodeURIComponent(score)}&correct=${encodeURIComponent(correct)}`;
+  const imageSrc = `/s/og?score=${encodeURIComponent(score)}&correct=${encodeURIComponent(correct)}`;
 
   return (
     <main className="mx-auto flex flex-col gap-8 p-4 font-franklin">
@@ -30,9 +28,9 @@ export default async function DevOgPreview({ searchParams }: Props) {
         <p className="max-w-prose">
           Edit{" "}
           <code className="rounded bg-(--fg)/10 px-1.5 py-0.5">
-            app/s/opengraph-image.tsx
+            app/s/og/route.tsx
           </code>{" "}
-          and refresh. Image is {OG_WIDTH}×{OG_HEIGHT}.
+          and refresh. Image is {size.width}×{size.height}.
         </p>
       </header>
 
@@ -69,14 +67,14 @@ export default async function DevOgPreview({ searchParams }: Props) {
 
       <div
         className="overflow-hidden border border-red-500"
-        style={{ aspectRatio: `${OG_WIDTH} / ${OG_HEIGHT}` }}
+        style={{ aspectRatio: `${size.width} / ${size.height}` }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- intentional: live OG ImageResponse */}
         <img
           src={imageSrc}
           alt={`OG preview: ${correct}/10 correct`}
-          width={OG_WIDTH}
-          height={OG_HEIGHT}
+          width={size.width}
+          height={size.height}
           className="h-auto w-full bg-white"
         />
       </div>

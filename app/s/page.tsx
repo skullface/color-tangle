@@ -14,7 +14,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     openGraph: {
       title: `Color Tangle — ${score} points`,
       description: `${correct}/10 correct. Can you beat this score?`,
-      images: [`/s/opengraph-image?score=${score}&correct=${correct}`],
+      images: [`/s/og?score=${score}&correct=${correct}`],
     },
   };
 }
