@@ -18,6 +18,7 @@ function getShareUrl(score: number, correct: number): string {
 
 export function Results({ score, correct, total, onReplay }: Props) {
   const [copied, setCopied] = useState(false);
+  const frown = correct <= total / 2;
 
   const shareUrl = getShareUrl(score, correct);
   const shareText = buildShareText(score, correct, total, shareUrl);
@@ -52,42 +53,46 @@ export function Results({ score, correct, total, onReplay }: Props) {
 
   return (
     <main className="flex flex-col items-center justify-center gap-8">
-      <h1 className="font-franklin text-3xl font-semibold">Done!</h1>
+      <h1 className="font-franklin text-4xl tracking-tight font-semibold">
+        {correct} out of {total} colors
+      </h1>
       <div className="font-source-serif text-center">
-        <p>Score: {score}</p>
-        <p>
-          {correct}/{total} correct
+        <p className="max-w-prose text-balance">
+          {frown ? "Oh… you only " : "Whoa! You "} got{" "}
+          {Math.round((correct / total) * 100)}% correct.{" "}
+          {frown ? (
+            <>
+              Looks like you got <em>tangled</em> up in those color names. Want
+              to try again?
+            </>
+          ) : (
+            "Well done, but why do you even know these strange color names?"
+          )}
         </p>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-3">
         <button
           type="button"
           onClick={handleShare}
-          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
+          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) bg-(--fg) text-(--bg) hover:bg-transparent hover:text-(--fg) hover:border-(--fg)/50 focus:outline-none focus-visible:ring-4 focus-visible:ring-(--fg)/50"
         >
-          Share
+          Share results
         </button>
         <button
           type="button"
           onClick={handleXShare}
-          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
+          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) bg-(--fg) text-(--bg) hover:bg-transparent hover:text-(--fg) hover:border-(--fg)/50 focus:outline-none focus-visible:ring-4 focus-visible:ring-(--fg)/50"
         >
-          Post on X
-        </button>
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
-        >
-          {copied ? "Copied!" : "Copy link"}
+          Share to Twitter
         </button>
       </div>
       <button
         type="button"
         onClick={onReplay}
-        className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
+        className="group cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg)/50 hover:bg-(--fg) hover:text-(--bg) hover:border-(--fg)"
       >
-        Play again
+        Start over{" "}
+        <span className="opacity-50 group-hover:opacity-100">&rarr;</span>
       </button>
     </main>
   );
