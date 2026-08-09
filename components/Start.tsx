@@ -34,7 +34,7 @@ export function Start({ onStart }: Props) {
             <span className="hidden md:inline">DCC</span> book 3
           </cite>
           &nbsp;
-          <span className="no-underline inline-block size-3 opacity-33 text-sm group-hover:opacity-100">
+          <span className="no-underline inline-block size-3 opacity-33 text-xs group-hover:opacity-100">
             ↗
           </span>
         </Link>

@@ -33,17 +33,22 @@ export function Feedback({
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            "hover:decoration-inherit! underline underline-offset-2 italic",
+            "group",
             "rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)",
           )}
           style={
             {
-              textDecorationColor: accent,
               "--accent": accent,
             } as CSSProperties
           }
         >
-          (Source)
+          <span className="italic underline decoration-(--accent) underline-offset-2 group-hover:decoration-(--fg)">
+            Source
+          </span>
+          &nbsp;
+          <span className="text-xs text-(--accent) group-hover:text-(--fg)">
+            ↗
+          </span>
         </Link>
       </p>
       <Button variant="secondary" arrow accent={accent} onClick={onNext}>
