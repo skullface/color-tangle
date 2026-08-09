@@ -72,6 +72,11 @@ a {
     infinite backwards;
 }
 
+/* Pause paint-bound ambient SVG loops when offscreen or in a hidden tab */
+.logo-ambient-paused .stroke-draw-loop {
+  animation-play-state: paused;
+}
+
 .stroke-draw-check {
   animation-duration: 280ms;
 }
@@ -99,15 +104,30 @@ a {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .group\/info:is(:hover, :focus-visible) .stroke-draw-hover-1 {
+  @media (hover: hover) and (pointer: fine) {
+    .group\/info:hover .stroke-draw-hover-1 {
+      animation: stroke-draw 280ms cubic-bezier(0.5, 0, 0.15, 1) both;
+    }
+
+    .group\/info:hover .stroke-draw-hover-2 {
+      animation: stroke-draw 140ms cubic-bezier(0.5, 0, 0.15, 1) 280ms both;
+    }
+
+    .group\/draw:hover .stroke-draw-hover {
+      animation: stroke-draw 220ms cubic-bezier(0.5, 0, 0.15, 1) both;
+      animation-delay: calc(var(--i, 0) * 45ms);
+    }
+  }
+
+  .group\/info:focus-visible .stroke-draw-hover-1 {
     animation: stroke-draw 280ms cubic-bezier(0.5, 0, 0.15, 1) both;
   }
 
-  .group\/info:is(:hover, :focus-visible) .stroke-draw-hover-2 {
+  .group\/info:focus-visible .stroke-draw-hover-2 {
     animation: stroke-draw 140ms cubic-bezier(0.5, 0, 0.15, 1) 280ms both;
   }
 
-  .group\/draw:is(:hover, :focus-visible) .stroke-draw-hover {
+  .group\/draw:focus-visible .stroke-draw-hover {
     animation: stroke-draw 220ms cubic-bezier(0.5, 0, 0.15, 1) both;
     animation-delay: calc(var(--i, 0) * 45ms);
   }

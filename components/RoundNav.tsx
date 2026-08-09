@@ -20,9 +20,10 @@ const tooltipPopupClassName = cn(
   "relative font-franklin text-xs font-[450] px-2 py-1 rounded-sm",
   "bg-(--fg) text-(--bg)",
   "origin-(--transform-origin)",
-  "transition-[transform,opacity] duration-100 ease-out",
-  "data-starting-style:opacity-0 data-starting-style:scale-[0.98]",
-  "data-ending-style:opacity-0 data-ending-style:scale-[0.98]",
+  "transition-opacity duration-100 ease-out",
+  "motion-safe:transition-[transform,opacity]",
+  "data-starting-style:opacity-0 motion-safe:data-starting-style:scale-[0.98]",
+  "data-ending-style:opacity-0 motion-safe:data-ending-style:scale-[0.98]",
 );
 
 const tooltipArrowClassName = cn(

@@ -48,7 +48,7 @@ export function Start({ onStart }: Props) {
 const TANGLE_STAGGER_MS = 700;
 const TANGLE_LOOP_MS = [5200, 6000, 6800] as const;
 const LETTER_DURATION_MS = 200;
-const LETTER_STAGGER_MS = 180;
+const LETTER_STAGGER_MS = 60;
 
 function drawStyle(delayMs: number, durationMs: number): CSSProperties {
   return {
@@ -72,9 +72,30 @@ const TANGLE_PATHS = [
 const Logo = () => {
   const [drawing, setDrawing] = useState(false);
   const clearTimer = useRef<number | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const offscreenRef = useRef(false);
 
   useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+
+    const syncAmbient = () => {
+      svg.classList.toggle(
+        "logo-ambient-paused",
+        document.hidden || offscreenRef.current,
+      );
+    };
+
+    const io = new IntersectionObserver(([entry]) => {
+      offscreenRef.current = !entry?.isIntersecting;
+      syncAmbient();
+    });
+    io.observe(svg);
+    document.addEventListener("visibilitychange", syncAmbient);
+
     return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", syncAmbient);
       if (clearTimer.current !== null) window.clearTimeout(clearTimer.current);
     };
   }, []);
@@ -93,6 +114,7 @@ const Logo = () => {
 
   return (
     <svg
+      ref={svgRef}
       fill="none"
       height="146"
       viewBox="0 0 261 146"

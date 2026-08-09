@@ -33,9 +33,13 @@ export function ColorOption({
         aria-label={color.name}
         onClick={() => onAnswer(color)}
         className={cn(
-          "size-full border-0 rounded-md bg-transparent p-0 transition-transform duration-75",
+          "size-full border-0 rounded-md bg-transparent p-0",
+          "motion-safe:transition-transform motion-safe:duration-75 motion-safe:ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ring)",
-          !revealed && "cursor-pointer hover:scale-105",
+          !revealed && [
+            "cursor-pointer",
+            "motion-safe:[@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.03]",
+          ],
         )}
         style={{ "--ring": ring } as CSSProperties}
       >

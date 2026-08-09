@@ -25,11 +25,11 @@ export function OutcomeIcon({
       <span
         className={cn(
           "col-start-1 row-start-1 inline-flex",
-          "motion-safe:transition-transform duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
-          "motion-reduce:transition-opacity motion-reduce:duration-150",
+          "transition-opacity duration-150",
+          "motion-safe:transition-[transform,opacity] motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
           showFace
-            ? "pointer-events-none scale-0 motion-reduce:scale-100 motion-reduce:opacity-0"
-            : "scale-100 motion-reduce:opacity-100",
+            ? "pointer-events-none opacity-0 motion-safe:scale-[0.95]"
+            : "opacity-100 motion-safe:scale-100",
         )}
       >
         <WaitDotsIcon />
@@ -37,11 +37,11 @@ export function OutcomeIcon({
       <span
         className={cn(
           "col-start-1 row-start-1 inline-flex",
-          "motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
-          "motion-reduce:transition-opacity motion-reduce:duration-150",
+          "transition-opacity duration-150",
+          "motion-safe:transition-[transform,opacity] motion-safe:duration-200 motion-safe:ease-[cubic-bezier(0.19,1,0.22,1)]",
           showFace
-            ? "scale-100 motion-reduce:opacity-100"
-            : "pointer-events-none scale-0 motion-reduce:scale-100 motion-reduce:opacity-0",
+            ? "opacity-100 motion-safe:scale-100"
+            : "pointer-events-none opacity-0 motion-safe:scale-[0.95]",
         )}
       >
         <NavIcon src={frown ? "/frown.svg" : "/smiley.svg"} />
@@ -52,8 +52,8 @@ export function OutcomeIcon({
 
 const waitDotClass = cn(
   "wait-dot",
-  "motion-safe:group-hover/wait:animate-[wait-dot-bounce_0.9s_ease-in-out_infinite]",
-  "motion-safe:group-focus/wait:animate-[wait-dot-bounce_0.9s_ease-in-out_infinite]",
+  "motion-safe:[@media(hover:hover)_and_(pointer:fine)]:group-hover/wait:animate-[wait-dot-bounce_0.9s_ease-in-out_infinite]",
+  "motion-safe:group-focus-visible/wait:animate-[wait-dot-bounce_0.9s_ease-in-out_infinite]",
 );
 
 function WaitDotsIcon() {
