@@ -27,8 +27,7 @@ export function Start({
       <p className="font-source-serif text-center">
         Match ten color names to their swatches.
         <br />
-        Inspired by the Iron&nbsp;Tangle from
-        <br className="block md:hidden" />{" "}
+        Inspired by{" "}
         <Link
           href="https://mattdinniman.com/books/the-dungeon-anarchists-cookbook/"
           target="_blank"
@@ -36,8 +35,7 @@ export function Start({
           className="group"
         >
           <cite className="underline decoration-(--fg)/33 underline-offset-2 group-hover:decoration-(--fg)">
-            <span className="inline md:hidden">Dungeon Crawler Carl</span>{" "}
-            <span className="hidden md:inline">DCC</span> book 3
+            Dungeon Crawler Carl book 3
           </cite>
           &nbsp;
           <span className="no-underline inline-block size-3 opacity-33 text-xs group-hover:opacity-100">
