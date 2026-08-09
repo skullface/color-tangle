@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { size } from "@/app/s/og/size";
 
@@ -9,6 +11,9 @@ export async function GET(request: Request) {
   const score = searchParams.get("score") ?? "0";
   const correct = searchParams.get("correct") ?? "0";
 
+  const bg = await readFile(join(process.cwd(), "public/og-bg.png"));
+  const bgSrc = `data:image/png;base64,${bg.toString("base64")}`;
+
   return new ImageResponse(
     <div
       style={{
@@ -18,10 +23,12 @@ export async function GET(request: Request) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#ffffff",
         color: "#111111",
         fontSize: 48,
         fontFamily: "sans-serif",
+        backgroundImage: `url(${bgSrc})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <div style={{ display: "flex", fontSize: 64, fontWeight: 700 }}>
