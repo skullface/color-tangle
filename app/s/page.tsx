@@ -1,26 +1,31 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { parseCorrectParam } from "@/lib/scoring";
 
 type Props = {
   searchParams: Promise<{ correct?: string }>;
 };
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  const { correct = "0" } = await searchParams;
+export async function generateMetadata({
+  searchParams,
+}: Props): Promise<Metadata> {
+  const { correct: raw } = await searchParams;
+  const correct = parseCorrectParam(raw);
 
   return {
-    title: `Color Tangle — ${correct}/10`,
-    description: `Got ${correct}/10 in Color Tangle. Can you beat it?`,
+    title: `Color Tangle: Quiz guessing game`,
+    description: `I guessed ${correct}/10 correctly. How many rare, weird color names do you know?`,
     openGraph: {
-      title: `Color Tangle — ${correct}/10`,
-      description: `${correct}/10 correct. Can you beat this?`,
+      title: `Color Tangle: Quiz guessing game`,
+      description: `I guessed ${correct}/10 correctly. How many rare, weird color names do you know?`,
       images: [`/s/og?correct=${correct}`],
     },
   };
 }
 
 export default async function SharePage({ searchParams }: Props) {
-  const { correct = "0" } = await searchParams;
+  const { correct: raw } = await searchParams;
+  const correct = parseCorrectParam(raw);
 
   return (
     <main>

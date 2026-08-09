@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { size } from "@/app/s/og/size";
+import { parseCorrectParam } from "@/lib/scoring";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ const franklinSemiBold = readFile(
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const correct = searchParams.get("correct") ?? "0";
+  const correct = parseCorrectParam(searchParams.get("correct"));
 
   const [bg, regular, semibold] = await Promise.all([
     readFile(join(process.cwd(), "public/og-bg.png")),
