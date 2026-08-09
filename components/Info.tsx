@@ -1,11 +1,17 @@
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export function Info({}) {
   return (
     <div className="fixed bottom-4 right-4">
       <Link
         href="#"
-        className="group/info inline-flex p-2 opacity-66 hover:opacity-100 focus-visible:opacity-100 ring ring-current/33 rounded-full"
+        className={cn(
+          "group/info",
+          "inline-flex p-2 rounded-full",
+          "opacity-66 hover:opacity-100 focus-visible:opacity-100",
+          "ring ring-current/33",
+        )}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
