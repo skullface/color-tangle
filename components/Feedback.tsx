@@ -25,7 +25,7 @@ export function Feedback({
 
   return (
     <>
-      <p className="font-source-serif max-w-[62ch] text-center text-balance">
+      <p className="font-source-serif sm:w-[62ch] text-center text-balance max-sm:text-sm">
         {target.description}. {target.etymology}
         &nbsp;
         <Link

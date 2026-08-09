@@ -25,6 +25,11 @@ body {
   color: var(--fg);
 }
 
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
 a {
   color: inherit;
 }

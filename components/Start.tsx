@@ -18,26 +18,27 @@ export function Start({ onStart }: Props) {
       >
         <Logo />
       </h1>
-      <div className="font-source-serif text-center text-balance max-w-prose">
-        <p>
-          Match ten color names to their swatches.
-          <br />
-          Inspired by the Iron&nbsp;Tangle from{" "}
-          <Link
-            href="https://mattdinniman.com/books/the-dungeon-anarchists-cookbook/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group"
-          >
-            <cite className="underline decoration-(--fg)/33 underline-offset-2 group-hover:decoration-(--fg)">
-              DCC book 3
-            </cite>{" "}
-            <span className="no-underline inline-block size-3 opacity-33 text-sm group-hover:opacity-100">
-              ↗
-            </span>
-          </Link>
-        </p>
-      </div>
+      <p className="font-source-serif text-center">
+        Match ten color names to their swatches.
+        <br />
+        Inspired by the Iron&nbsp;Tangle from
+        <br className="block md:hidden" />{" "}
+        <Link
+          href="https://mattdinniman.com/books/the-dungeon-anarchists-cookbook/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group"
+        >
+          <cite className="underline decoration-(--fg)/33 underline-offset-2 group-hover:decoration-(--fg)">
+            <span className="inline md:hidden">Dungeon Crawler Carl</span>{" "}
+            <span className="hidden md:inline">DCC</span> book 3
+          </cite>
+          &nbsp;
+          <span className="no-underline inline-block size-3 opacity-33 text-sm group-hover:opacity-100">
+            ↗
+          </span>
+        </Link>
+      </p>
       <Button arrow onClick={onStart}>
         Start game
       </Button>

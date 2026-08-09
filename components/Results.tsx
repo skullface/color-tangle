@@ -140,8 +140,11 @@ export function Results({ correct, total, onReplay }: Props) {
           )}
         </p>
       </div>
-      <div className="flex items-center justify-center gap-3">
-        <button onClick={handleShare} className="group cursor-pointer">
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <button
+          onClick={handleShare}
+          className="group cursor-pointer max-md:w-full"
+        >
           <span className="underline decoration-(--fg)/33 font-serif underline-offset-2 group-hover:decoration-(--fg)">
             Share results
           </span>

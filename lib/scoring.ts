@@ -14,5 +14,5 @@ export function buildStoryPath(correct: number): string {
 }
 
 export function buildShareText(url: string): string {
-  return `ｒｉｄｅ　ｔｈｅ　Ｃｏｌｏｒ　Ｔａｎｇｌｅ　🕶️ ${url}`;
+  return `🕶️　ride the Ｃｏｌｏｒ　Ｔａｎｇｌｅ ${url}`;
 }

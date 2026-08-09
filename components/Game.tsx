@@ -23,7 +23,7 @@ function GameShell({
 }) {
   return (
     <div className="flex min-h-dvh flex-col">
-      <div className="flex-1 lg:flex lg:items-center lg:justify-center max-md:pt-10 max-md:px-6">
+      <div className="flex-1 [@media(min-width:400px)_and_(min-height:600px)]:flex [@media(min-width:400px)_and_(min-height:600px)]:items-center [@media(min-width:400px)_and_(min-height:600px)]:justify-center max-md:pt-10 max-md:px-6">
         {children}
       </div>
       <footer className="font-source-serif text-sm">{footerNav}</footer>

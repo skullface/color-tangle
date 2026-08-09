@@ -21,7 +21,8 @@ export function Button({
     <button
       type={type}
       className={cn(
-        "cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border",
+        "cursor-pointer select-none",
+        "py-2 px-3 rounded-sm text-sm font-franklin font-semibold border",
         arrow && "group",
         variant === "primary" && [
           "border-(--fg) bg-(--fg) text-(--bg)",

@@ -43,9 +43,12 @@ export function Round({
   }, [roundNumber, revealed]);
 
   return (
-    <main className="flex flex-col items-center justify-center gap-8">
-      <p className="font-newsreader text-center text-lg">
-        <span className="opacity-50" aria-label={`Round ${roundNumber}`}>
+    <main className="flex flex-col items-center justify-center gap-6 md:gap-8">
+      <p className="text-center md:text-lg">
+        <span
+          className="opacity-50 tabular-nums"
+          aria-label={`Round ${roundNumber}`}
+        >
           {roundNumber}.
         </span>{" "}
         What color is{" "}
