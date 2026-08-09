@@ -17,13 +17,37 @@ type RoundNavProps = {
 };
 
 const tooltipPopupClassName = cn(
-  "font-franklin text-sm font-medium px-2 py-1 rounded-sm",
+  "relative font-franklin text-xs font-[450] px-2 py-1 rounded-sm",
   "bg-(--fg) text-(--bg)",
   "origin-(--transform-origin)",
   "transition-[transform,opacity] duration-100 ease-out",
   "data-starting-style:opacity-0 data-starting-style:scale-[0.98]",
   "data-ending-style:opacity-0 data-ending-style:scale-[0.98]",
 );
+
+const tooltipArrowClassName = cn(
+  "flex text-(--fg)",
+  "data-[side=bottom]:top-[-5px]",
+  "data-[side=top]:bottom-[-5px] data-[side=top]:rotate-180",
+  "data-[side=left]:right-[-7px] data-[side=left]:rotate-90",
+  "data-[side=right]:left-[-7px] data-[side=right]:-rotate-90",
+);
+
+function TooltipArrow() {
+  return (
+    <Tooltip.Arrow className={tooltipArrowClassName}>
+      <svg
+        width="10"
+        height="5"
+        viewBox="0 0 10 5"
+        fill="currentColor"
+        aria-hidden
+      >
+        <path d="M0 5h10L5 0z" />
+      </svg>
+    </Tooltip.Arrow>
+  );
+}
 
 function outcomeIconTooltip({
   resultsReachable,
@@ -89,8 +113,9 @@ export function RoundNav({
                 />
               </Tooltip.Trigger>
               <Tooltip.Portal>
-                <Tooltip.Positioner sideOffset={8}>
+                <Tooltip.Positioner sideOffset={6}>
                   <Tooltip.Popup className={tooltipPopupClassName}>
+                    <TooltipArrow />
                     {name}
                   </Tooltip.Popup>
                 </Tooltip.Positioner>
@@ -136,8 +161,9 @@ export function RoundNav({
           </span>
         </Tooltip.Trigger>
         <Tooltip.Portal>
-          <Tooltip.Positioner sideOffset={8}>
+          <Tooltip.Positioner sideOffset={6}>
             <Tooltip.Popup className={tooltipPopupClassName}>
+              <TooltipArrow />
               {tooltip}
             </Tooltip.Popup>
           </Tooltip.Positioner>
