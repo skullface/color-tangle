@@ -3,7 +3,8 @@
 import { useEffect, useEffectEvent, useState, type ReactNode } from "react";
 import { track } from "@vercel/analytics";
 
-import { buildOptions, pickRoundColors, type Color } from "@/lib/colors";
+import { startPlay } from "@/app/actions/play";
+import type { Color } from "@/lib/colors";
 import type { GameConfig } from "@/lib/config";
 import type { Answer } from "@/lib/scoring";
 
@@ -39,19 +40,26 @@ export function Game({ config }: { config: GameConfig }) {
   const [viewIndex, setViewIndex] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [hasCompleted, setHasCompleted] = useState(false);
+  const [playToken, setPlayToken] = useState<string | null>(null);
+  const [starting, setStarting] = useState(false);
 
-  function start() {
+  async function start() {
+    if (starting) return;
     track("quiz_start");
-    const nextTargets = pickRoundColors(config.colors, config.rounds);
-    setTargets(nextTargets);
-    setOptionsByRound(
-      nextTargets.map((target) => buildOptions(target, config.colors)),
-    );
-    setAnswers(nextTargets.map(() => null));
-    setViewIndex(0);
-    setCorrectCount(0);
-    setHasCompleted(false);
-    setPhase("playing");
+    setStarting(true);
+    try {
+      const session = await startPlay();
+      setTargets(session.targets);
+      setOptionsByRound(session.optionsByRound);
+      setPlayToken(session.playToken);
+      setAnswers(session.targets.map(() => null));
+      setViewIndex(0);
+      setCorrectCount(0);
+      setHasCompleted(false);
+      setPhase("playing");
+    } finally {
+      setStarting(false);
+    }
   }
 
   const frontier = answers.findIndex((answer) => answer === null);
@@ -162,17 +170,19 @@ export function Game({ config }: { config: GameConfig }) {
   if (phase === "start") {
     return (
       <GameShell footerNav={footerNav}>
-        <Start onStart={start} />
+        <Start onStart={start} starting={starting} />
       </GameShell>
     );
   }
 
-  if (phase === "results") {
+  if (phase === "results" && playToken) {
     return (
       <GameShell footerNav={footerNav}>
         <Results
           correct={correctCount}
           total={config.rounds}
+          playToken={playToken}
+          picks={answers.map((answer) => answer!.picked.name)}
           onReplay={start}
         />
       </GameShell>

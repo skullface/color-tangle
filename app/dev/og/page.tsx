@@ -2,6 +2,12 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { size as ogSize } from "@/app/s/og/size";
 import { size as storySize } from "@/app/s/story/size";
+import {
+  buildOgPath,
+  buildStoryPath,
+  clampCorrect,
+  signCorrect,
+} from "@/lib/scoring";
 
 export const metadata: Metadata = {
   title: "OG preview",
@@ -17,10 +23,11 @@ export default async function DevOgPreview({ searchParams }: Props) {
     notFound();
   }
 
-  const { correct = "7" } = await searchParams;
-  const query = `correct=${encodeURIComponent(correct)}`;
-  const ogSrc = `/s/og?${query}`;
-  const storySrc = `/s/story?${query}`;
+  const { correct: raw = "7" } = await searchParams;
+  const correct = clampCorrect(Number.parseInt(raw, 10));
+  const token = signCorrect(correct);
+  const ogSrc = buildOgPath(token);
+  const storySrc = buildStoryPath(token);
 
   return (
     <main className="mx-auto flex flex-col gap-8 p-4 font-franklin">

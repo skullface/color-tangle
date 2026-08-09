@@ -2,9 +2,10 @@
 
 import { track } from "@vercel/analytics";
 import type { CSSProperties } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { buildSharePath, buildShareText, buildStoryPath } from "@/lib/scoring";
+import { finishPlay } from "@/app/actions/play";
+import { buildShareText } from "@/lib/scoring";
 import { Button } from "./Button";
 
 function drawIndex(i: number): CSSProperties {
@@ -14,12 +15,15 @@ function drawIndex(i: number): CSSProperties {
 type Props = {
   correct: number;
   total: number;
+  playToken: string;
+  picks: string[];
   onReplay: () => void;
 };
 
-function getShareUrl(correct: number): string {
-  return `${window.location.origin}${buildSharePath(correct)}`;
-}
+type ShareLinks = {
+  shareText: string;
+  storyPath: string;
+};
 
 function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
@@ -30,21 +34,45 @@ function downloadBlob(blob: Blob, filename: string) {
   URL.revokeObjectURL(url);
 }
 
-export function Results({ correct, total, onReplay }: Props) {
+export function Results({
+  correct,
+  total,
+  playToken,
+  picks,
+  onReplay,
+}: Props) {
   const [copied, setCopied] = useState(false);
   const [sharingStory, setSharingStory] = useState(false);
+  const [share, setShare] = useState<ShareLinks | null>(null);
   const frown = correct <= total / 2;
+  const picksKey = picks.join("\0");
 
-  const shareUrl = getShareUrl(correct);
-  const shareText = buildShareText(shareUrl);
-  const storyPath = buildStoryPath(correct);
+  useEffect(() => {
+    let cancelled = false;
+
+    finishPlay(playToken, picks).then((result) => {
+      if (cancelled || !result) return;
+      const shareUrl = `${window.location.origin}${result.path}`;
+      setShare({
+        shareText: buildShareText(shareUrl),
+        storyPath: result.storyPath,
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+    // picksKey stands in for picks contents without depending on array identity
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- picksKey encodes picks
+  }, [playToken, picksKey]);
 
   async function handleShare() {
+    if (!share) return;
     track("quiz_share", { method: "web_share" });
 
     if (navigator.share) {
       try {
-        await navigator.share({ text: shareText });
+        await navigator.share({ text: share.shareText });
         return;
       } catch {
         // User cancelled or share failed — fall through to copy.
@@ -55,26 +83,28 @@ export function Results({ correct, total, onReplay }: Props) {
   }
 
   async function handleCopy() {
+    if (!share) return;
     track("quiz_share", { method: "copy" });
-    await navigator.clipboard.writeText(shareText);
+    await navigator.clipboard.writeText(share.shareText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
 
   function handleXShare() {
+    if (!share) return;
     track("quiz_share", { method: "x" });
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(share.shareText)}`;
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
   async function handleInstaShare() {
-    if (sharingStory) return;
+    if (!share || sharingStory) return;
 
     track("quiz_share", { method: "instagram" });
     setSharingStory(true);
 
     try {
-      const response = await fetch(storyPath);
+      const response = await fetch(share.storyPath);
       if (!response.ok) throw new Error("Failed to load story image");
 
       const blob = await response.blob();
@@ -87,7 +117,7 @@ export function Results({ correct, total, onReplay }: Props) {
           await navigator.share({
             files: [file],
             title: "Color Tangle",
-            text: shareText,
+            text: share.shareText,
           });
           return;
         } catch {
@@ -98,7 +128,7 @@ export function Results({ correct, total, onReplay }: Props) {
       downloadBlob(blob, "color-tangle-story.png");
     } catch {
       // Image fetch failed — copy link as a last resort.
-      await navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(share.shareText);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } finally {
@@ -160,9 +190,13 @@ export function Results({ correct, total, onReplay }: Props) {
         </p>
       </div>
       <div className="flex flex-col items-center justify-center gap-3">
-        <button onClick={handleShare} className="group cursor-pointer flex-1">
+        <button
+          onClick={handleShare}
+          disabled={!share}
+          className="group cursor-pointer flex-1 disabled:cursor-default disabled:opacity-50"
+        >
           <span className="underline decoration-(--fg)/33 underline-offset-2 group-hover:decoration-(--fg)">
-            Share results
+            {copied ? "Copied!" : "Share results"}
           </span>
           :
         </button>
@@ -170,6 +204,7 @@ export function Results({ correct, total, onReplay }: Props) {
           <Button
             className="group/draw inline-flex items-center gap-1.5"
             onClick={handleXShare}
+            disabled={!share}
           >
             <TwitterIcon />
             Twitter
@@ -177,7 +212,7 @@ export function Results({ correct, total, onReplay }: Props) {
           <Button
             className="group/draw inline-flex items-center gap-1.5 w-25"
             onClick={handleInstaShare}
-            disabled={sharingStory}
+            disabled={!share || sharingStory}
           >
             <InstagramIcon />
             {sharingStory ? "Saving…" : "IG story"}

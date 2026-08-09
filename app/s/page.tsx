@@ -1,16 +1,17 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { parseCorrectParam } from "@/lib/scoring";
+import { buildOgPath, signCorrect, verifyShareToken } from "@/lib/scoring";
 
 type Props = {
-  searchParams: Promise<{ correct?: string }>;
+  searchParams: Promise<{ t?: string }>;
 };
 
 export async function generateMetadata({
   searchParams,
 }: Props): Promise<Metadata> {
-  const { correct: raw } = await searchParams;
-  const correct = parseCorrectParam(raw);
+  const { t } = await searchParams;
+  const correct = verifyShareToken(t);
+  const token = signCorrect(correct);
 
   return {
     title: `Color Tangle: Quiz guessing game`,
@@ -18,14 +19,14 @@ export async function generateMetadata({
     openGraph: {
       title: `Color Tangle: Quiz guessing game`,
       description: `I guessed ${correct}/10 correctly. How many rare, weird color names do you know?`,
-      images: [`/s/og?correct=${correct}`],
+      images: [buildOgPath(token)],
     },
   };
 }
 
 export default async function SharePage({ searchParams }: Props) {
-  const { correct: raw } = await searchParams;
-  const correct = parseCorrectParam(raw);
+  const { t } = await searchParams;
+  const correct = verifyShareToken(t);
 
   return (
     <main>

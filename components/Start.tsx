@@ -7,9 +7,10 @@ import { Button } from "./Button";
 
 type Props = {
   onStart: () => void;
+  starting?: boolean;
 };
 
-export function Start({ onStart }: Props) {
+export function Start({ onStart, starting = false }: Props) {
   return (
     <main className="flex flex-col items-center justify-center gap-6">
       <h1
@@ -39,8 +40,8 @@ export function Start({ onStart }: Props) {
           </span>
         </Link>
       </p>
-      <Button arrow onClick={onStart}>
-        Start game
+      <Button arrow onClick={onStart} disabled={starting}>
+        {starting ? "Starting…" : "Start game"}
       </Button>
     </main>
   );
