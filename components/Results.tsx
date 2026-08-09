@@ -108,8 +108,27 @@ export function Results({ correct, total, onReplay }: Props) {
 
   return (
     <main className="flex flex-col items-center justify-center gap-8">
-      <h1 className="font-franklin text-4xl tracking-tight font-semibold">
+      <h1 className="font-franklin text-4xl tracking-tight font-semibold relative">
         {Math.round((correct / total) * 100)}% correct
+        <svg
+          fill="none"
+          height="45"
+          viewBox="0 0 247 45"
+          width="247"
+          xmlns="http://www.w3.org/2000/svg"
+          className="opacity-20 top-[-10%] left-[-10%] absolute"
+        >
+          <path
+            d="m105.31 2c.018 0 .037 0-6.1007.12791-6.1374.12791-18.4311.38372-30.9109 1.70745-12.4797 1.32373-24.7729 3.70763-33.3316 5.791-8.5587 2.08334-13.0104 3.79404-16.9021 5.57524-11.58308 5.3013-14.52153 9.2283-15.92787 12.0008-.41919.8264.1928 1.8491.9475 2.9037.79914 1.1167 4.6723 2.6022 21.50027 5.7915 13.6878 2.5941 38.4094 4.8469 66.2285 6.1859 27.8189 1.3389 58.1349 1.102 80.9429-.0091 22.807-1.111 37.188-3.0891 46.239-4.5246 12.414-1.9688 14.738-3.8617 18.183-5.1771 8.763-4.1417 9.362-9.7059 8.566-11.9704-.651-1.1152-5.411-8.7367-23.507-12.02124-16.882-3.0641-23.293-3.04431-43.864-4.5457-20.687-1.50984-48.331-.48139-52.914-.43325-6.276.25396-9.55.81164-13.399 1.90713-2.321.74987-5.387 1.89351-8.545 3.07182"
+            pathLength={1}
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="4"
+            className="stroke-draw"
+            style={{ animationDuration: "750ms" }}
+          />
+        </svg>
       </h1>
       <div className="font-source-serif text-center">
         <p className="max-w-[65ch] text-balance">
