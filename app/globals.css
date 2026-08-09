@@ -46,10 +46,29 @@ a {
   }
 }
 
+@keyframes stroke-draw-loop {
+  0%,
+  100% {
+    stroke-dashoffset: 1;
+  }
+
+  42%,
+  58% {
+    stroke-dashoffset: 0;
+  }
+}
+
 .stroke-draw {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   animation: stroke-draw 280ms cubic-bezier(0.5, 0, 0.15, 1) both;
+}
+
+.stroke-draw-loop {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: stroke-draw-loop 5.2s cubic-bezier(0.645, 0.045, 0.355, 1)
+    infinite backwards;
 }
 
 .stroke-draw-check {
@@ -65,14 +84,16 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stroke-draw {
+  .stroke-draw,
+  .stroke-draw-loop {
     animation: none;
     visibility: visible;
     stroke-dashoffset: 0;
   }
 }
 
-.stroke-draw-hover {
+.stroke-draw-hover,
+.logo-letter {
   stroke-dasharray: 1;
 }
 
@@ -83,6 +104,12 @@ a {
 
   .group\/info:is(:hover, :focus-visible) .stroke-draw-hover-2 {
     animation: stroke-draw 140ms cubic-bezier(0.5, 0, 0.15, 1) 280ms both;
+  }
+
+  .logo-drawing .logo-letter {
+    animation: stroke-draw var(--logo-letter-ms, 140ms)
+      cubic-bezier(0.5, 0, 0.15, 1) both;
+    animation-delay: calc(var(--i, 0) * var(--logo-letter-stagger-ms, 90ms));
   }
 }
 
