@@ -103,7 +103,7 @@ export function RoundNav({
       })}
       <Tooltip.Root>
         <Tooltip.Trigger
-          delay={100}
+          delay={50}
           aria-label={tooltip}
           onClick={canOpenResults ? onGoToResults : undefined}
           className={cn(

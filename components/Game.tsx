@@ -11,6 +11,7 @@ import { scoreRound, type Answer } from "@/lib/scoring";
 import { Results } from "./Results";
 import { RoundNav } from "./RoundNav";
 import { Round } from "./Round";
+import { Info } from "./Info";
 
 type Phase = "start" | "playing" | "results";
 
@@ -26,6 +27,7 @@ function GameShell({
       <div className="flex-1 lg:flex lg:items-center lg:justify-center max-md:pt-10 max-md:px-6">
         {children}
       </div>
+      <Info />
       <footer className="font-source-serif text-sm">{footerNav}</footer>
     </div>
   );
