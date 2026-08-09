@@ -8,8 +8,24 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
-  title: "Color Tangle",
-  description: "Match color names to swatches as fast as you can.",
+  title: "Color Tangle: Quiz guessing game",
+  description: "How many rare, weird color names do you know?",
+  openGraph: {
+    title: "Color Tangle: Quiz guessing game",
+    description: "How many rare, weird color names do you know?",
+    images: [
+      {
+        url: "/color-tangle-quiz-guessing-game.png",
+        width: 1600,
+        height: 900,
+        alt: "guess weird colors",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/color-tangle-quiz-guessing-game.png"],
+  },
 };
 
 export default function RootLayout({
