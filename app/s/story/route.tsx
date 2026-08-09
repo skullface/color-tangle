@@ -15,6 +15,7 @@ const franklinSemiBold = readFile(
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  const correct = searchParams.get("correct") ?? "0";
 
   const [bg, regular, semibold] = await Promise.all([
     readFile(join(process.cwd(), "public/og-bg-portrait.png")),
@@ -53,7 +54,7 @@ export async function GET(request: Request) {
           textAlign: "center",
         }}
       >
-        Can you guess 7 out of 10
+        Can you guess {correct} out of 10
       </div>
       <div
         style={{

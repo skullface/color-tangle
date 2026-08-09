@@ -3,7 +3,7 @@
 import { track } from "@vercel/analytics";
 import { useState } from "react";
 
-import { buildSharePath, buildShareText } from "@/lib/scoring";
+import { buildSharePath, buildShareText, buildStoryPath } from "@/lib/scoring";
 import { Button } from "./Button";
 
 type Props = {
@@ -17,19 +17,30 @@ function getShareUrl(score: number, correct: number): string {
   return `${window.location.origin}${buildSharePath(score, correct)}`;
 }
 
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 export function Results({ score, correct, total, onReplay }: Props) {
   const [copied, setCopied] = useState(false);
+  const [sharingStory, setSharingStory] = useState(false);
   const frown = correct <= total / 2;
 
   const shareUrl = getShareUrl(score, correct);
   const shareText = buildShareText(score, correct, total, shareUrl);
+  const storyPath = buildStoryPath(score, correct);
 
   async function handleShare() {
     track("quiz_share", { method: "web_share" });
 
     if (navigator.share) {
       try {
-        await navigator.share({ text: shareText, url: shareUrl });
+        await navigator.share({ text: shareText });
         return;
       } catch {
         // User cancelled or share failed — fall through to copy.
@@ -52,6 +63,43 @@ export function Results({ score, correct, total, onReplay }: Props) {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
+  async function handleInstaShare() {
+    if (sharingStory) return;
+
+    track("quiz_share", { method: "instagram" });
+    setSharingStory(true);
+
+    try {
+      const response = await fetch(storyPath);
+      if (!response.ok) throw new Error("Failed to load story image");
+
+      const blob = await response.blob();
+      const file = new File([blob], "color-tangle-story.png", {
+        type: blob.type || "image/png",
+      });
+
+      if (navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: "Color Tangle",
+            text: shareText,
+          });
+          return;
+        } catch {
+          // User cancelled or share failed — fall through to download.
+        }
+      }
+
+      downloadBlob(blob, "color-tangle-story.png");
+    } catch {
+      // Image fetch failed — copy link as a last resort.
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } finally {
+      setSharingStory(false);
+    }
   }
 
   return (
@@ -74,8 +122,15 @@ export function Results({ score, correct, total, onReplay }: Props) {
         </p>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <Button onClick={handleXShare}>Share to Twitter</Button>
-        <Button onClick={handleInstaShare}>Share to Instagram</Button>
+        <Button onClick={handleShare}>Share results</Button>
+        <Button onClick={handleXShare}>Twitter</Button>
+        <Button
+          className="w-20"
+          onClick={handleInstaShare}
+          disabled={sharingStory}
+        >
+          {sharingStory ? "Saving…" : "IG story"}
+        </Button>
       </div>
       <Button variant="secondary" arrow onClick={onReplay}>
         Start over
