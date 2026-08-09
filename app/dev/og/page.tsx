@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { size } from "@/app/s/og/size";
+import { size as ogSize } from "@/app/s/og/size";
+import { size as storySize } from "@/app/s/story/size";
 
 export const metadata: Metadata = {
   title: "OG preview",
@@ -17,20 +18,26 @@ export default async function DevOgPreview({ searchParams }: Props) {
   }
 
   const { score = "700", correct = "7" } = await searchParams;
-  const imageSrc = `/s/og?score=${encodeURIComponent(score)}&correct=${encodeURIComponent(correct)}`;
+  const query = `score=${encodeURIComponent(score)}&correct=${encodeURIComponent(correct)}`;
+  const ogSrc = `/s/og?${query}`;
+  const storySrc = `/s/story?${query}`;
 
   return (
     <main className="mx-auto flex flex-col gap-8 p-4 font-franklin">
       <header className="flex flex-col gap-2">
         <h1 className="text-3xl font-semibold tracking-tight">
-          Results share OG preview
+          Results share image preview
         </h1>
         <p className="max-w-prose">
           Edit{" "}
           <code className="rounded bg-(--fg)/10 px-1.5 py-0.5">
             app/s/og/route.tsx
           </code>{" "}
-          and refresh. Image is {size.width}×{size.height}.
+          or{" "}
+          <code className="rounded bg-(--fg)/10 px-1.5 py-0.5">
+            app/s/story/route.tsx
+          </code>{" "}
+          and refresh.
         </p>
       </header>
 
@@ -55,29 +62,65 @@ export default async function DevOgPreview({ searchParams }: Props) {
         >
           Update
         </button>
-        <a
-          href={imageSrc}
-          target="_blank"
-          rel="noreferrer"
-          className="px-2 py-2 underline"
-        >
-          Open raw image
-        </a>
       </form>
 
-      <div
-        className="overflow-hidden border border-red-500"
-        style={{ aspectRatio: `${size.width} / ${size.height}` }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element -- intentional: live OG ImageResponse */}
-        <img
-          src={imageSrc}
-          alt={`OG preview: ${correct}/10 correct`}
-          width={size.width}
-          height={size.height}
-          className="h-auto w-full bg-white"
-        />
-      </div>
+      <section className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-xl font-semibold tracking-tight">
+            Open Graph ({ogSize.width}×{ogSize.height})
+          </h2>
+          <a
+            href={ogSrc}
+            target="_blank"
+            rel="noreferrer"
+            className="underline"
+          >
+            Open raw image
+          </a>
+        </div>
+        <div
+          className="overflow-hidden border border-red-500"
+          style={{ aspectRatio: `${ogSize.width} / ${ogSize.height}` }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element -- intentional: live OG ImageResponse */}
+          <img
+            src={ogSrc}
+            alt={`OG preview: ${correct}/10 correct`}
+            width={ogSize.width}
+            height={ogSize.height}
+            className="h-auto w-full bg-white"
+          />
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-xl font-semibold tracking-tight">
+            Instagram story ({storySize.width}×{storySize.height})
+          </h2>
+          <a
+            href={storySrc}
+            target="_blank"
+            rel="noreferrer"
+            className="underline"
+          >
+            Open raw image
+          </a>
+        </div>
+        <div
+          className="mx-auto w-full max-w-sm overflow-hidden border border-red-500"
+          style={{ aspectRatio: `${storySize.width} / ${storySize.height}` }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element -- intentional: live OG ImageResponse */}
+          <img
+            src={storySrc}
+            alt={`Story preview: ${correct}/10 correct`}
+            width={storySize.width}
+            height={storySize.height}
+            className="h-auto w-full bg-white"
+          />
+        </div>
+      </section>
     </main>
   );
 }
