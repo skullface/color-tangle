@@ -10,7 +10,7 @@ type Props = {
 
 export function Start({ onStart }: Props) {
   return (
-    <main className="flex flex-col items-center justify-center gap-8">
+    <main className="flex flex-col items-center justify-center gap-6">
       <h1
         className="font-franklin text-3xl font-semibold"
         aria-label="Color Tangle quiz"
@@ -19,20 +19,35 @@ export function Start({ onStart }: Props) {
       </h1>
       <div className="font-source-serif text-center text-balance max-w-prose">
         <p>
-          Match the color name to its swatch. 10 rounds. Inspired by the
-          Iron&nbsp;Tangle from{" "}
-          <Link href="https://mattdinniman.com/books/the-dungeon-anarchists-cookbook/">
-            <cite>Dungeon Crawler Carl</cite> book 3
+          Match ten color names to their swatches.
+          <br />
+          Inspired by the Iron&nbsp;Tangle from{" "}
+          <Link
+            href="https://mattdinniman.com/books/the-dungeon-anarchists-cookbook/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group"
+          >
+            <cite className="underline decoration-(--fg)/33 underline-offset-2 group-hover:decoration-(--fg)">
+              DCC book 3
+            </cite>{" "}
+            <span className="no-underline inline-block size-3 opacity-33 text-sm group-hover:opacity-100">
+              ↗
+            </span>
           </Link>
-          .
         </p>
       </div>
       <button
         type="button"
         onClick={onStart}
-        className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) hover:bg-(--fg) hover:text-(--bg)"
+        className={cn(
+          "group cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) bg-(--fg) text-(--bg)",
+          "hover:bg-transparent hover:text-(--fg) hover:border-(--fg)/50",
+          "focus:outline-none focus-visible:ring-4 focus-visible:ring-(--fg)/50",
+        )}
       >
-        Start
+        Start game{" "}
+        <span className="opacity-50 group-hover:opacity-100">&rarr;</span>
       </button>
     </main>
   );
@@ -92,7 +107,7 @@ const Logo = () => {
       width="261"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
-      className={cn(drawing && "logo-drawing")}
+      className={cn(drawing && "logo-drawing", "scale-125 mb-6")}
       onPointerEnter={startLetterDraw}
     >
       {TANGLE_PATHS.map((path, i) => (
@@ -105,14 +120,14 @@ const Logo = () => {
           stroke="color-mix(in srgb, var(--fg) 15%, var(--bg))"
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth="4"
+          strokeWidth="3"
         />
       ))}
       <g
         stroke="var(--fg)"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="6"
+        strokeWidth="5"
         style={
           {
             "--logo-letter-ms": `${LETTER_DURATION_MS}ms`,
