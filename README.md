@@ -1,6 +1,6 @@
 # Color Tangle
 
-A color-name quiz: match the name to the swatch, score points, share your result.
+A color-name quiz: match the name to the swatch, share your result.
 
 ## Getting Started
 

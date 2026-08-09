@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: Promise<{ score?: string; correct?: string }>;
+  searchParams: Promise<{ correct?: string }>;
 };
 
 export default async function DevOgPreview({ searchParams }: Props) {
@@ -17,8 +17,8 @@ export default async function DevOgPreview({ searchParams }: Props) {
     notFound();
   }
 
-  const { score = "700", correct = "7" } = await searchParams;
-  const query = `score=${encodeURIComponent(score)}&correct=${encodeURIComponent(correct)}`;
+  const { correct = "7" } = await searchParams;
+  const query = `correct=${encodeURIComponent(correct)}`;
   const ogSrc = `/s/og?${query}`;
   const storySrc = `/s/story?${query}`;
 

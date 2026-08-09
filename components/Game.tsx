@@ -5,7 +5,7 @@ import { track } from "@vercel/analytics";
 
 import { buildOptions, pickRoundColors, type Color } from "@/lib/colors";
 import type { GameConfig } from "@/lib/config";
-import { scoreRound, type Answer } from "@/lib/scoring";
+import type { Answer } from "@/lib/scoring";
 
 import { Results } from "./Results";
 import { RoundNav } from "./RoundNav";
@@ -37,7 +37,6 @@ export function Game({ config }: { config: GameConfig }) {
   const [optionsByRound, setOptionsByRound] = useState<Color[][]>([]);
   const [answers, setAnswers] = useState<(Answer | null)[]>([]);
   const [viewIndex, setViewIndex] = useState(0);
-  const [score, setScore] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [hasCompleted, setHasCompleted] = useState(false);
 
@@ -50,7 +49,6 @@ export function Game({ config }: { config: GameConfig }) {
     );
     setAnswers(nextTargets.map(() => null));
     setViewIndex(0);
-    setScore(0);
     setCorrectCount(0);
     setHasCompleted(false);
     setPhase("playing");
@@ -66,13 +64,11 @@ export function Game({ config }: { config: GameConfig }) {
     }
 
     const correct = picked.name === targets[viewIndex].name;
-    const points = scoreRound(correct);
     setAnswers((current) => {
       const next = [...current];
-      next[viewIndex] = { picked, correct, points };
+      next[viewIndex] = { picked, correct };
       return next;
     });
-    setScore((current) => current + points);
     if (correct) {
       setCorrectCount((current) => current + 1);
     }
@@ -107,7 +103,6 @@ export function Game({ config }: { config: GameConfig }) {
     }
     if (!hasCompleted) {
       track("quiz_complete", {
-        score,
         correct: correctCount,
       });
       setHasCompleted(true);
@@ -176,7 +171,6 @@ export function Game({ config }: { config: GameConfig }) {
     return (
       <GameShell footerNav={footerNav}>
         <Results
-          score={score}
           correct={correctCount}
           total={config.rounds}
           onReplay={start}

@@ -59,7 +59,7 @@ function outcomeIconTooltip({
   if (resultsReachable) {
     return frown ? "Maybe next time!" : "Nice work!";
   }
-  return "Finish the game to see your score!";
+  return "Finish the game to see your results!";
 }
 
 export function RoundNav({

@@ -7,14 +7,13 @@ import { buildSharePath, buildShareText, buildStoryPath } from "@/lib/scoring";
 import { Button } from "./Button";
 
 type Props = {
-  score: number;
   correct: number;
   total: number;
   onReplay: () => void;
 };
 
-function getShareUrl(score: number, correct: number): string {
-  return `${window.location.origin}${buildSharePath(score, correct)}`;
+function getShareUrl(correct: number): string {
+  return `${window.location.origin}${buildSharePath(correct)}`;
 }
 
 function downloadBlob(blob: Blob, filename: string) {
@@ -26,14 +25,14 @@ function downloadBlob(blob: Blob, filename: string) {
   URL.revokeObjectURL(url);
 }
 
-export function Results({ score, correct, total, onReplay }: Props) {
+export function Results({ correct, total, onReplay }: Props) {
   const [copied, setCopied] = useState(false);
   const [sharingStory, setSharingStory] = useState(false);
   const frown = correct <= total / 2;
 
-  const shareUrl = getShareUrl(score, correct);
-  const shareText = buildShareText(score, correct, total, shareUrl);
-  const storyPath = buildStoryPath(score, correct);
+  const shareUrl = getShareUrl(correct);
+  const shareText = buildShareText(shareUrl);
+  const storyPath = buildStoryPath(correct);
 
   async function handleShare() {
     track("quiz_share", { method: "web_share" });
@@ -109,7 +108,7 @@ export function Results({ score, correct, total, onReplay }: Props) {
       </h1>
       <div className="font-source-serif text-center">
         <p className="max-w-prose text-balance">
-          {frown ? "Oh… you only " : "Whoa! You "} got{" "}
+          {frown ? "Oof, you only " : "Whoa! You "} got{" "}
           {Math.round((correct / total) * 100)}% correct.{" "}
           {frown ? (
             <>
