@@ -21,6 +21,9 @@ export function invalidShareImageResponse(): Response {
 }
 
 /** Module-scoped load — one read per isolate, shared by og + story routes. */
+export const franklinRegular = readFile(
+  join(process.cwd(), "assets/fonts/LibreFranklin-Regular.woff"),
+);
 export const franklinSemiBold = readFile(
   join(process.cwd(), "assets/fonts/LibreFranklin-SemiBold.woff"),
 );

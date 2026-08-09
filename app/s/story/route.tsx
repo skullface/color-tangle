@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import {
+  franklinRegular,
   franklinSemiBold,
   invalidShareImageResponse,
   shareImageHeaders,
@@ -22,8 +23,9 @@ export async function GET(request: Request) {
     return invalidShareImageResponse();
   }
 
-  const [bgSrc, semibold] = await Promise.all([
+  const [bgSrc, regular, semibold] = await Promise.all([
     bgSrcPromise,
+    franklinRegular,
     franklinSemiBold,
   ]);
 
@@ -77,11 +79,12 @@ export async function GET(request: Request) {
           display: "flex",
           justifyContent: "center",
           marginTop: 24,
-          fontSize: 40,
-          lineHeight: 1.4,
           width: "100%",
           opacity: 0.5,
           textAlign: "center",
+          fontSize: 40,
+          fontWeight: 400,
+          lineHeight: 1.4,
         }}
       >
         Because I can. Try to beat me.
@@ -91,6 +94,12 @@ export async function GET(request: Request) {
       ...size,
       headers: shareImageHeaders,
       fonts: [
+        {
+          name: "Libre Franklin",
+          data: regular,
+          style: "normal",
+          weight: 400,
+        },
         {
           name: "Libre Franklin",
           data: semibold,

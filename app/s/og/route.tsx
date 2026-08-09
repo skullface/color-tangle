@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { size } from "@/app/s/og/size";
 import {
+  franklinRegular,
   franklinSemiBold,
   invalidShareImageResponse,
   shareImageHeaders,
@@ -11,9 +12,9 @@ import { parseShareToken } from "@/lib/scoring";
 
 export const runtime = "nodejs";
 
-const bgSrcPromise = readFile(
-  join(process.cwd(), "public/og-bg.png"),
-).then((bg) => `data:image/png;base64,${bg.toString("base64")}`);
+const bgSrcPromise = readFile(join(process.cwd(), "public/og-bg.png")).then(
+  (bg) => `data:image/png;base64,${bg.toString("base64")}`,
+);
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -22,8 +23,9 @@ export async function GET(request: Request) {
     return invalidShareImageResponse();
   }
 
-  const [bgSrc, semibold] = await Promise.all([
+  const [bgSrc, regular, semibold] = await Promise.all([
     bgSrcPromise,
+    franklinRegular,
     franklinSemiBold,
   ]);
 
@@ -49,12 +51,12 @@ export async function GET(request: Request) {
           display: "flex",
           paddingTop: 120,
           paddingRight: 120,
-          fontSize: 120,
           maxWidth: 920,
+          textAlign: "right",
+          fontSize: 120,
+          fontWeight: 600,
           letterSpacing: -2,
           lineHeight: 1.1,
-          fontWeight: 600,
-          textAlign: "right",
         }}
       >
         Can you guess {correct} out of 10 weird, rare color names?
@@ -64,11 +66,12 @@ export async function GET(request: Request) {
           display: "flex",
           paddingRight: 100,
           marginTop: 24,
-          fontSize: 56,
-          lineHeight: 1.4,
           width: 520,
           opacity: 0.5,
           textAlign: "right",
+          fontSize: 56,
+          fontWeight: 400,
+          lineHeight: 1.4,
         }}
       >
         Because I can. Try to beat me.
@@ -78,6 +81,12 @@ export async function GET(request: Request) {
       ...size,
       headers: shareImageHeaders,
       fonts: [
+        {
+          name: "Libre Franklin",
+          data: regular,
+          style: "normal",
+          weight: 400,
+        },
         {
           name: "Libre Franklin",
           data: semibold,
