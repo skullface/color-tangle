@@ -4,6 +4,7 @@ import { track } from "@vercel/analytics";
 import { useState } from "react";
 
 import { buildSharePath, buildShareText } from "@/lib/scoring";
+import { Button } from "./Button";
 
 type Props = {
   score: number;
@@ -51,6 +52,8 @@ export function Results({ score, correct, total, onReplay }: Props) {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
+  }
+
   return (
     <main className="flex flex-col items-center justify-center gap-8">
       <h1 className="font-franklin text-4xl tracking-tight font-semibold">
@@ -71,29 +74,12 @@ export function Results({ score, correct, total, onReplay }: Props) {
         </p>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <button
-          type="button"
-          onClick={handleShare}
-          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) bg-(--fg) text-(--bg) hover:bg-transparent hover:text-(--fg) hover:border-(--fg)/50 focus:outline-none focus-visible:ring-4 focus-visible:ring-(--fg)/50"
-        >
-          Share results
-        </button>
-        <button
-          type="button"
-          onClick={handleXShare}
-          className="cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) bg-(--fg) text-(--bg) hover:bg-transparent hover:text-(--fg) hover:border-(--fg)/50 focus:outline-none focus-visible:ring-4 focus-visible:ring-(--fg)/50"
-        >
-          Share to Twitter
-        </button>
+        <Button onClick={handleXShare}>Share to Twitter</Button>
+        <Button onClick={handleInstaShare}>Share to Instagram</Button>
       </div>
-      <button
-        type="button"
-        onClick={onReplay}
-        className="group cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg)/50 hover:bg-(--fg) hover:text-(--bg) hover:border-(--fg)"
-      >
-        Start over{" "}
-        <span className="opacity-50 group-hover:opacity-100">&rarr;</span>
-      </button>
+      <Button variant="secondary" arrow onClick={onReplay}>
+        Start over
+      </Button>
     </main>
   );
 }

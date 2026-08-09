@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import { softAccentColor, type Color } from "@/lib/colors";
+import { Button } from "./Button";
 import { useThemeColors } from "./useThemeColors";
 import { cn } from "@/lib/utils";
 
@@ -45,29 +46,9 @@ export function Feedback({
           (Source)
         </Link>
       </p>
-      <button
-        type="button"
-        onClick={onNext}
-        className={cn(
-          "group cursor-pointer py-2 px-3",
-          "rounded-sm border",
-          "text-sm font-franklin font-semibold",
-          "hover:bg-(--fg) hover:text-(--bg) hover:border-(--fg)!",
-          "focus:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)",
-        )}
-        style={
-          {
-            borderColor: accent,
-            "--accent": accent,
-          } as CSSProperties
-        }
-      >
+      <Button variant="secondary" arrow accent={accent} onClick={onNext}>
         {roundNumber === totalRounds ? "See results" : "Next color"}
-        &nbsp;
-        <span className="group-hover:text-inherit!" style={{ color: accent }}>
-          &rarr;
-        </span>
-      </button>
+      </Button>
     </>
   );
 }

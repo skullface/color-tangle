@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Button } from "./Button";
 
 type Props = {
   onStart: () => void;
@@ -37,18 +38,9 @@ export function Start({ onStart }: Props) {
           </Link>
         </p>
       </div>
-      <button
-        type="button"
-        onClick={onStart}
-        className={cn(
-          "group cursor-pointer py-2 px-3 rounded-sm text-sm font-franklin font-semibold border border-(--fg) bg-(--fg) text-(--bg)",
-          "hover:bg-transparent hover:text-(--fg) hover:border-(--fg)/50",
-          "focus:outline-none focus-visible:ring-4 focus-visible:ring-(--fg)/50",
-        )}
-      >
-        Start game{" "}
-        <span className="opacity-50 group-hover:opacity-100">&rarr;</span>
-      </button>
+      <Button arrow onClick={onStart}>
+        Start game
+      </Button>
     </main>
   );
 }
