@@ -34,13 +34,7 @@ function downloadBlob(blob: Blob, filename: string) {
   URL.revokeObjectURL(url);
 }
 
-export function Results({
-  correct,
-  total,
-  playToken,
-  picks,
-  onReplay,
-}: Props) {
+export function Results({ correct, total, playToken, picks, onReplay }: Props) {
   const [copied, setCopied] = useState(false);
   const [sharingStory, setSharingStory] = useState(false);
   const [share, setShare] = useState<ShareLinks | null>(null);
@@ -207,15 +201,15 @@ export function Results({
             disabled={!share}
           >
             <TwitterIcon />
-            Twitter
+            Post on Twitter
           </Button>
           <Button
-            className="group/draw inline-flex items-center gap-1.5 w-25"
+            className="group/draw inline-flex items-center gap-1.5 w-39.25"
             onClick={handleInstaShare}
             disabled={!share || sharingStory}
           >
             <InstagramIcon />
-            {sharingStory ? "Saving…" : "IG story"}
+            {sharingStory ? "Saving image…" : "Save for IG story"}
           </Button>
         </div>
       </div>
