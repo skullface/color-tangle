@@ -43,8 +43,8 @@ export function Round({
   }, [roundNumber, revealed]);
 
   return (
-    <main className="flex flex-col items-center justify-center gap-6 md:gap-8">
-      <p className="text-center md:text-lg">
+    <main className="flex flex-col items-center justify-center gap-4">
+      <h2 className="text-center">
         <span
           className="opacity-50 tabular-nums"
           aria-label={`Round ${roundNumber}`}
@@ -56,12 +56,12 @@ export function Round({
           {target.name.toLowerCase()}
         </strong>
         ?
-      </p>
+      </h2>
       <div
         ref={optionsRef}
         role="group"
         aria-label="Color options"
-        className="flex flex-wrap gap-2 mx-6 items-center justify-center"
+        className="grid grid-cols-2 md:grid-cols-4 gap-2 mx-6 place-items-center"
       >
         {options.map((color, index) => (
           <ColorOption
@@ -75,7 +75,7 @@ export function Round({
           />
         ))}
       </div>
-      <div id="feedback" className="flex flex-col items-center gap-4 h-26">
+      <div id="feedback" className="flex flex-col items-center gap-4 mt-2 h-26">
         {revealed && (
           <Feedback
             target={target}
