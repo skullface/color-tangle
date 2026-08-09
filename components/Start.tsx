@@ -45,12 +45,12 @@ export function Start({
           </span>
         </Link>
       </p>
-      <Button arrow onClick={onStart} disabled={starting} className="w-29.25">
       {challengeCorrect != null && (
         <p className="font-source-serif text-center text-balance">
           Your friend got {challengeCorrect * 10}% correct. Try to beat that!
         </p>
       )}
+      <Button arrow onClick={onStart} disabled={starting} className="w-29.5">
         {starting ? "Starting…" : "Start game"}
       </Button>
     </main>
