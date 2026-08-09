@@ -45,6 +45,9 @@ export function Round({
   return (
     <main className="flex flex-col items-center justify-center gap-8">
       <p className="font-newsreader text-center text-lg">
+        <span className="opacity-50" aria-label={`Round ${roundNumber}`}>
+          {roundNumber}.
+        </span>{" "}
         What color is{" "}
         <strong className="font-semibold font-franklin px-px">
           {target.name.toLowerCase()}
