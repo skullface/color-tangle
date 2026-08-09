@@ -32,7 +32,13 @@ function GameShell({
   );
 }
 
-export function Game({ config }: { config: GameConfig }) {
+export function Game({
+  config,
+  challengeCorrect = null,
+}: {
+  config: GameConfig;
+  challengeCorrect?: number | null;
+}) {
   const [phase, setPhase] = useState<Phase>("start");
   const [targets, setTargets] = useState<Color[]>([]);
   const [optionsByRound, setOptionsByRound] = useState<Color[][]>([]);
@@ -170,7 +176,11 @@ export function Game({ config }: { config: GameConfig }) {
   if (phase === "start") {
     return (
       <GameShell footerNav={footerNav}>
-        <Start onStart={start} starting={starting} />
+        <Start
+          onStart={start}
+          starting={starting}
+          challengeCorrect={challengeCorrect}
+        />
       </GameShell>
     );
   }

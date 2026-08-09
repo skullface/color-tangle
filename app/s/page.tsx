@@ -1,6 +1,12 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { buildOgPath, signCorrect, verifyShareToken } from "@/lib/scoring";
+import { Game } from "@/components/Game";
+import { getGameConfig } from "@/lib/config";
+import {
+  buildOgPath,
+  parseShareToken,
+  signCorrect,
+  verifyShareToken,
+} from "@/lib/scoring";
 
 type Props = {
   searchParams: Promise<{ t?: string }>;
@@ -35,14 +41,8 @@ export async function generateMetadata({
 
 export default async function SharePage({ searchParams }: Props) {
   const { t } = await searchParams;
-  const correct = verifyShareToken(t);
+  const challengeCorrect = parseShareToken(t);
+  const config = await getGameConfig();
 
-  return (
-    <main>
-      <h1>Color Tangle</h1>
-      <p>They got {correct}/10.</p>
-      <p>Can you beat that?</p>
-      <Link href="/">Play</Link>
-    </main>
-  );
+  return <Game config={config} challengeCorrect={challengeCorrect} />;
 }

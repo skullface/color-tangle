@@ -8,9 +8,14 @@ import { Button } from "./Button";
 type Props = {
   onStart: () => void;
   starting?: boolean;
+  challengeCorrect?: number | null;
 };
 
-export function Start({ onStart, starting = false }: Props) {
+export function Start({
+  onStart,
+  starting = false,
+  challengeCorrect = null,
+}: Props) {
   return (
     <main className="flex flex-col items-center justify-center gap-6">
       <h1
@@ -41,6 +46,11 @@ export function Start({ onStart, starting = false }: Props) {
         </Link>
       </p>
       <Button arrow onClick={onStart} disabled={starting} className="w-29.25">
+      {challengeCorrect != null && (
+        <p className="font-source-serif text-center text-balance">
+          Your friend got {challengeCorrect * 10}% correct. Try to beat that!
+        </p>
+      )}
         {starting ? "Starting…" : "Start game"}
       </Button>
     </main>
