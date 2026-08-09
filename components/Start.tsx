@@ -136,14 +136,15 @@ const Logo = () => {
           stroke="color-mix(in srgb, var(--fg) 15%, var(--bg))"
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth="3"
+          strokeWidth="4"
         />
       ))}
       <g
         stroke="var(--fg)"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="5"
+        strokeWidth="6"
+        transform="translate(0 -4)"
         style={
           {
             "--logo-letter-ms": `${LETTER_DURATION_MS}ms`,
@@ -151,7 +152,7 @@ const Logo = () => {
           } as CSSProperties
         }
       >
-        {LETTER_PATHS.map((d, i) => (
+        {LETTER_PATHS.slice(0, COLOR_LETTER_COUNT).map((d, i) => (
           <path
             key={i}
             d={d}
@@ -160,10 +161,23 @@ const Logo = () => {
             style={{ "--i": i } as CSSProperties}
           />
         ))}
+        <g transform="translate(-8 0)">
+          {LETTER_PATHS.slice(COLOR_LETTER_COUNT).map((d, i) => (
+            <path
+              key={i + COLOR_LETTER_COUNT}
+              d={d}
+              pathLength={1}
+              className="logo-letter"
+              style={{ "--i": i + COLOR_LETTER_COUNT } as CSSProperties}
+            />
+          ))}
+        </g>
       </g>
     </svg>
   );
 };
+
+const COLOR_LETTER_COUNT = 6;
 
 const LETTER_PATHS = [
   "m67.336 42.1987c.0898-.7099-.2044-3.1463-1.4648-6.3748-.4758-1.2188-1.9212-1.9742-3.5962-2.7815-2.3856-1.1498-5.7642 1.163-8.1444 2.6537-2.006 1.2563-3.9473 5.1022-5.4562 8.784-2.5142 6.1351-.7876 22.6582.8432 25.86 2.0732 4.0703 11.0547 8.9145 16.3536 8.3985 7.3914-.7197 9.5056-6.9312 12.1164-11.5 2.4-5.6 5.3333-15.6667 6.5-20",
