@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: "Color Tangle: Quiz guessing game",
   description: "How many rare, weird color names do you know?",
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
   openGraph: {
     title: "Color Tangle: Quiz guessing game",
     description: "How many rare, weird color names do you know?",
