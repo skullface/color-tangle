@@ -51,7 +51,7 @@ export function Feedback({
           </span>
         </Link>
       </p>
-      <Button variant="secondary" arrow accent={accent} onClick={onNext}>
+      <Button arrow accent={accent} onClick={onNext}>
         {roundNumber === totalRounds ? "See results" : "Next color"}
       </Button>
     </>
