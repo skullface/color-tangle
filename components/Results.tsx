@@ -112,7 +112,7 @@ export function Results({ correct, total, onReplay }: Props) {
         {correct} out of {total} colors
       </h1>
       <div className="font-source-serif text-center">
-        <p className="max-w-prose text-balance">
+        <p className="max-w-[60ch] text-balance">
           {frown ? "Oof, you only " : "Whoa! You "} got{" "}
           {Math.round((correct / total) * 100)}% correct.{" "}
           {frown ? (
@@ -156,7 +156,7 @@ export function Results({ correct, total, onReplay }: Props) {
             Twitter
           </Button>
           <Button
-            className="group/draw inline-flex items-center gap-1.5"
+            className="group/draw inline-flex items-center gap-1.5 w-25"
             onClick={handleInstaShare}
             disabled={sharingStory}
           >

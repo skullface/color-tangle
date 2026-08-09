@@ -59,13 +59,14 @@ a {
 }
 
 .stroke-draw {
-  stroke-dasharray: 1;
+  /* Gap > dash so round linecaps don't peek when offset hides the stroke */
+  stroke-dasharray: 1 1.1;
   stroke-dashoffset: 1;
   animation: stroke-draw 280ms cubic-bezier(0.5, 0, 0.15, 1) both;
 }
 
 .stroke-draw-loop {
-  stroke-dasharray: 1;
+  stroke-dasharray: 1 1.1;
   stroke-dashoffset: 1;
   animation: stroke-draw-loop 5.2s cubic-bezier(0.645, 0.045, 0.355, 1)
     infinite backwards;
@@ -94,7 +95,7 @@ a {
 
 .stroke-draw-hover,
 .logo-letter {
-  stroke-dasharray: 1;
+  stroke-dasharray: 1 1.1;
 }
 
 @media (prefers-reduced-motion: no-preference) {
