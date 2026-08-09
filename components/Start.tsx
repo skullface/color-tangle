@@ -40,7 +40,7 @@ export function Start({ onStart, starting = false }: Props) {
           </span>
         </Link>
       </p>
-      <Button arrow onClick={onStart} disabled={starting}>
+      <Button arrow onClick={onStart} disabled={starting} className="w-29.25">
         {starting ? "Starting…" : "Start game"}
       </Button>
     </main>
