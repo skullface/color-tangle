@@ -35,25 +35,35 @@ export function signCorrect(correct: number): string {
 }
 
 /**
- * Verify a share token and return the score.
- * Invalid / missing / forged tokens resolve to 0.
+ * Verify a share token and return the score, or `null` if missing/forged.
+ * Prefer this when invalid input must not be treated like a real 0.
  */
-export function verifyShareToken(token: string | null | undefined): number {
-  if (!token || !process.env.SHARE_SECRET) return 0;
+export function parseShareToken(
+  token: string | null | undefined,
+): number | null {
+  if (!token || !process.env.SHARE_SECRET) return null;
 
   const [value, sig, ...rest] = token.split(".");
-  if (!value || !sig || rest.length > 0) return 0;
+  if (!value || !sig || rest.length > 0) return null;
 
   const correct = clampCorrect(Number.parseInt(value, 10));
-  if (value !== String(correct)) return 0;
+  if (value !== String(correct)) return null;
 
   const expected = signPayload(value);
   const sigBuf = Buffer.from(sig);
   const expectedBuf = Buffer.from(expected);
-  if (sigBuf.length !== expectedBuf.length) return 0;
-  if (!timingSafeEqual(sigBuf, expectedBuf)) return 0;
+  if (sigBuf.length !== expectedBuf.length) return null;
+  if (!timingSafeEqual(sigBuf, expectedBuf)) return null;
 
   return correct;
+}
+
+/**
+ * Verify a share token and return the score.
+ * Invalid / missing / forged tokens resolve to 0.
+ */
+export function verifyShareToken(token: string | null | undefined): number {
+  return parseShareToken(token) ?? 0;
 }
 
 export function buildSharePath(token: string): string {

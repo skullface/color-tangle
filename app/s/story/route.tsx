@@ -1,29 +1,31 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import {
+  franklinSemiBold,
+  invalidShareImageResponse,
+  shareImageHeaders,
+} from "@/app/s/share-image";
 import { size } from "@/app/s/story/size";
-import { verifyShareToken } from "@/lib/scoring";
+import { parseShareToken } from "@/lib/scoring";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
-const franklinRegular = readFile(
-  join(process.cwd(), "assets/fonts/LibreFranklin-Regular.woff"),
-);
-const franklinSemiBold = readFile(
-  join(process.cwd(), "assets/fonts/LibreFranklin-SemiBold.woff"),
-);
+const bgSrcPromise = readFile(
+  join(process.cwd(), "public/og-bg-portrait.png"),
+).then((bg) => `data:image/png;base64,${bg.toString("base64")}`);
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const correct = verifyShareToken(searchParams.get("t"));
+  const correct = parseShareToken(searchParams.get("t"));
+  if (correct === null) {
+    return invalidShareImageResponse();
+  }
 
-  const [bg, regular, semibold] = await Promise.all([
-    readFile(join(process.cwd(), "public/og-bg-portrait.png")),
-    franklinRegular,
+  const [bgSrc, semibold] = await Promise.all([
+    bgSrcPromise,
     franklinSemiBold,
   ]);
-  const bgSrc = `data:image/png;base64,${bg.toString("base64")}`;
 
   return new ImageResponse(
     <div
@@ -87,13 +89,8 @@ export async function GET(request: Request) {
     </div>,
     {
       ...size,
+      headers: shareImageHeaders,
       fonts: [
-        {
-          name: "Libre Franklin",
-          data: regular,
-          style: "normal",
-          weight: 400,
-        },
         {
           name: "Libre Franklin",
           data: semibold,
