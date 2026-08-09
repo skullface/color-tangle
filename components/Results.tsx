@@ -109,12 +109,12 @@ export function Results({ correct, total, onReplay }: Props) {
   return (
     <main className="flex flex-col items-center justify-center gap-8">
       <h1 className="font-franklin text-4xl tracking-tight font-semibold">
-        {correct} out of {total} colors
+        {Math.round((correct / total) * 100)}% correct
       </h1>
       <div className="font-source-serif text-center">
         <p className="max-w-[65ch] text-balance">
-          {frown ? "Oof, you only " : "Whoa! You "} got{" "}
-          {Math.round((correct / total) * 100)}% correct.{" "}
+          {frown ? "Oof, you only " : "Whoa! You "} got {correct} out of {total}{" "}
+          colors.{" "}
           {frown ? (
             <>
               Looks like you got <em>tangled</em> up in those color names.{" "}
