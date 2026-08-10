@@ -33,13 +33,17 @@ export function Round({
 
   // When advancing to a new unanswered round, the "Next color" control unmounts
   // and focus would otherwise fall to the footer nav. Move it to the first option.
+  // focusVisible: false keeps the ring off for pointer-driven advances (iOS would
+  // otherwise paint :focus-visible and make the first swatch look "selected"),
+  // while keyboard Tab/Shift+Tab still shows focus-visible normally.
   useEffect(() => {
     if (revealed) {
       return;
     }
     const firstOption =
       optionsRef.current?.querySelector<HTMLButtonElement>("button");
-    firstOption?.focus();
+    // `focusVisible` is in the HTML FocusOptions spec; TS's DOM lib still omits it.
+    firstOption?.focus({ focusVisible: false } as FocusOptions);
   }, [roundNumber, revealed]);
 
   return (
