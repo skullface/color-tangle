@@ -83,5 +83,5 @@ export function buildOgPath(token: string): string {
 }
 
 export function buildShareText(url: string): string {
-  return `🕶️ ${url}`;
+  return `${url}`;
 }

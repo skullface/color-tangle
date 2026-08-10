@@ -87,7 +87,8 @@ export function Results({ correct, total, playToken, picks, onReplay }: Props) {
   function handleXShare() {
     if (!share) return;
     track("quiz_share", { method: "x" });
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(share.shareText)}`;
+    const text = `I rode the Color Tangle 🕶️ ${share.shareText}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
@@ -194,7 +195,7 @@ export function Results({ correct, total, playToken, picks, onReplay }: Props) {
           </span>
           :
         </button>
-        <div className="flex flex-wrap items-center justify-center gap-3">
+        <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-3">
           <Button
             className="group/draw inline-flex items-center gap-1.5"
             onClick={handleXShare}
