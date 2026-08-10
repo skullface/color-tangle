@@ -18,7 +18,7 @@ export async function generateMetadata({
   const { t } = await searchParams;
   const correct = verifyShareToken(t);
   const token = signCorrect(correct);
-  const title = "Color Tangle: Quiz guessing game";
+  const title = "Color Tangle: A color quiz guessing game";
   const description = `I guessed ${correct * 10}% correctly. How many rare, weird color names do you know?`;
   const image = buildOgPath(token);
 
