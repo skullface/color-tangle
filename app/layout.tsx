@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Color Tangle: Quiz guessing game",
     description: "How many rare, weird color names do you know?",
+    siteName: "Color Tangle",
     images: [
       {
         url: "/color-tangle-quiz-guessing-game.png",
