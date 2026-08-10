@@ -1,15 +1,15 @@
 # Color Tangle
 
-A short quiz about rare color names. Each round shows a name and four organic swatches — pick the one that matches. Inspired by a gag in *Dungeon Crawler Carl* book 3.
+A little trivia quiz game about weird color names! Each round shows a color name and four swatches. The player chooses the swatch that matches the color name. Inspired by the 🚂 Iron Tangle’s color lines in *Dungeon Crawler Carl: The Dungeon Anarchist’s Cookbook*.
 
 ## Playing
 
-1. **Start** — Hit “Start game.” The server picks a fresh set of targets and options for the run.
-2. **Guess** — For each name, choose one of four blob-shaped swatches. After you pick, the app reveals the answer, a short description and etymology, and a source link.
-3. **Move on** — Continue with “Next color,” or use the footer dots / arrow keys to revisit answered rounds. You can’t skip ahead.
-4. **Results** — When every round is done, you get a percentage score and share options (link, Twitter/X, Instagram story image). Opening a shared link challenges a friend to beat that score.
+1. **Start**: Hit “Start game.” The server picks a fresh set of targets and options for the run.
+2. **Guess**: For each name, choose one of four blobby swatches. After you pick, the app reveals the answer, a short description and etymology, and a source link.
+3. **Move on**; Continue with “Next color,” or use the footer dots / arrow keys to revisit answered rounds. You can’t skip ahead.
+4. **Results**: When every round is done, you get a percentage score and share options (link, Twitter/X, Instagram story image). Opening a shared link challenges a friend to beat that score.
 
-The footer shows progress as dots plus a small face that unlocks once the run is complete. Keyboard: ← / → to move between reachable rounds (and back from results).
+The footer shows progress as dots plus a small face that unlocks once the run is complete. Keyboard: <kbd>←</kbd> / <kbd>→</kbd> to move between reachable rounds (and back from results).
 
 ## How it works
 
@@ -42,9 +42,3 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
-
-For share links and finish scoring to work locally, set `SHARE_SECRET` (any long random string). Without it, play still runs, but share tokens won’t verify.
-
-## Deploy
-
-Deploy with the Vercel CLI or Git integration. Set `SHARE_SECRET` in project env. Optionally connect Global Config for live palette / round tweaks. Enable Web Analytics and Speed Insights in the project settings if you want the built-in instrumentation.
